@@ -2,7 +2,6 @@ version: '3'
 
 services:
   keycloak-db:
-    image: postgres
     image: 'eds-keycloak-postgres'
     container_name: "eds-keycloak-postgres"
     restart: always
