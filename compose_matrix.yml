@@ -3,7 +3,6 @@ version: '3'
 services:
   matrix-postgres:
     image: docker.io/postgres:latest
-    image: 'eds-matrix-postgres'
     container_name: "eds-matrix-postgres"
     environment:
       - POSTGRES_DB=matrix
