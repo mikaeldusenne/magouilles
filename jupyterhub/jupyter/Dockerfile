@@ -7,7 +7,7 @@ USER root
 
 
 RUN apt-get update && \
-    apt-get install -y curl iputils-ping
+    apt-get install -y curl iputils-ping dnsutils
 
 
 RUN apt-get install -y r-base && \
@@ -37,3 +37,12 @@ RUN pip install --upgrade pexpect # needed for python 3.11+ support
 COPY requirements.txt ./
 RUN pip install -r requirements.txt
 
+USER root
+RUN mkdir -p /home/jovyan/my_amazing_research_stuff &&\
+    chown jovyan:users /home/jovyan/my_amazing_research_stuff
+
+RUN apt-get install -y build-essential libssl-dev libcurl4-openssl-dev libxml2-dev libjpeg-dev libpng-dev libtiff-dev liblapack-dev libblas-dev gfortran libsqlite3-dev libmysqlclient-dev libpq-dev zlib1g-dev
+
+ 
+
+USER jovyan
