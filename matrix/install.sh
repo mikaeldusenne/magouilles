@@ -1,11 +1,16 @@
 #!/bin/bash
 
+set -e
+set -u
+
 echo 'setting up matrix...'
 
 source .env
 
 mkdir -p ./matrix/matrix/data/
-chown 991:991 matrix/matrix/data
+touch ./matrix/matrix/data/homeserver.yaml # to have write rights
+
+sudo chown 991:991 ./matrix/matrix/data
 
 envsubst < matrix/matrix/homeserver.yaml > matrix/matrix/data/homeserver.yaml
 
