@@ -11,3 +11,4 @@ jupyterhub/data/
 !jupyterhub/data/jupyterhub_config.py
 volume
 matrix/matrix/data
+nginx/nginx.conf

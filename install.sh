@@ -46,4 +46,8 @@ MATRIX_FORM_SECRET
 MATRIX_REGISTRATION_SHARED_SECRET
 EOF
 
+bash ./jupyterhub/install.sh
+bash ./matrix/install.sh
+sudo bash ./nginx/install.sh
+
 echo 'done.'
