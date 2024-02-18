@@ -107,7 +107,7 @@ clients = [
         'enabled': True,
         'protocol': 'openid-connect',
         'publicClient': False,
-        'redirectUris': [f'https://eds-matrix-nginx/_synapse/client/oidc/callback'],
+        'redirectUris': [f'https://matrix.{environ["EDS_DOMAIN"]}/_synapse/client/oidc/callback'],
         'clientAuthenticatorType': 'client-secret',
         'secret': environ["KEYCLOAK_MATRIX_SECRET"]
     },
