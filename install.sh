@@ -15,7 +15,8 @@ fi
 
 echo 'setting up...'
 
-docker network create eds_network
+EDS_NETWORK=${EDS_NETWORK:-eds_network}
+docker network create $EDS_NETWORK || echo "network $EDS_NETWORK already exists."
 
 ./lib/create_certificates.sh keycloak
 ./lib/create_certificates.sh jupyterhub
