@@ -46,6 +46,4 @@ MATRIX_FORM_SECRET
 MATRIX_REGISTRATION_SHARED_SECRET
 EOF
 
-find . -type f -name install.sh -exec bash {} \;
-
 echo 'done.'
