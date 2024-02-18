@@ -24,9 +24,3 @@ RUN keytool -import -trustcacerts -alias jupyterhub -file /etc/x509/https/jupyte
 USER keycloak
 ###################################
 
-# change these values to point to a running postgres instance
-ENV KC_DB=postgres
-ENV KC_DB_URL="jdbc:postgresql://eds-keycloak-postgres/postgres"
-ENV KC_DB_USERNAME=postgres
-ENV KC_DB_PASSWORD=$KEYCLOAK_POSTGRES_PASSWORD
-

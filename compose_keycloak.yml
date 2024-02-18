@@ -36,6 +36,10 @@ services:
       - KEYCLOAK_ADMIN_PASSWORD=$KEYCLOAK_ADMIN_PASSWORD
       - KEYCLOAK_PROXY_ADDRESS_FORWARDING=true
       - KC_HTTP_ENABLED=true
+      - KC_DB=postgres
+      - KC_DB_URL="jdbc:postgresql://eds-keycloak-postgres/postgres"
+      - KC_DB_USERNAME=postgres
+      - KC_DB_PASSWORD=$KEYCLOAK_POSTGRES_PASSWORD
 
     command:
       - start-dev
