@@ -4,13 +4,13 @@ from os import environ
 import pickle
 
 def load_pickle(path):
-    logging.debug('loading pickle from {}'.format(path))
+    print('loading pickle from {}'.format(path))
     with open(path, 'rb') as f:
         o = pickle.load(f)
     return o
 
 def save_pickle(path, o):
-    logging.debug('saving pickle to {}'.format(path))
+    print('saving pickle to {}'.format(path))
     with open(path, 'wb') as f:
         pickle.dump(o, f)
 
@@ -50,17 +50,16 @@ access_token = response_data['access_token']
 
 print("obtained access token", access_token)
 
-new_realm_data = {
-    'id': 'royaume',
-    'realm': 'royaume',
-    'enabled': True,
-    'displayName': 'Royaume'
-}
 
 
 
 # Admin API endpoint for creating a new realm
-create_realm_url = f'{keycloak_url}/admin/realms'
+# create_realm_url = f'{keycloak_url}/admin/realms'
+
+endpoints = dict(
+    realm=f'{keycloak_url}/admin/realms',
+    client=f'{keycloak_url}/admin/realms/mynewrealm/clients',
+)
 
 # Authorization header with the access token
 auth_headers = {
@@ -69,13 +68,42 @@ auth_headers = {
 }
 
 
-create_realm_response = requests.post(create_realm_url, json=new_realm_data, headers=auth_headers)
+def request_keycloak(endpoint_name, data, description=""):
+    resp = requests.post(endpoints['endpoint_name'], json=data, headers=auth_headers)
+    if resp.status_code == 201:
+        print(f"{endpoint_name} {description} : success")
+    elif resp.status_code == 409:
+        print(f"{endpoint_name} {description} : already exists.")
+    else:
+        save_pickle("./data/response.pkl", resp)
+        raise Exception(f"{endpoint_name} {description} : Failed. Status code: {create_realm_response.status_code}")
 
-if create_realm_response.status_code == 201:
-    print("Realm created successfully.")
-else:
-    print(f"Failed to create realm. Status code: {create_realm_response.status_code}")
-    save_pickle("./data/response.pkl", create_realm_response)
 
+request_keycloak("realm", {
+    'id': 'royaume',
+    'realm': 'royaume',
+    'enabled': True,
+    'displayName': 'Royaume'
+})
 
+clients = [
+    {
+        'clientId': 'jupyterhub',
+        'name': 'JupyterHub',
+        'description': '',
+        'enabled': True,
+        'protocol': 'openid-connect',
+        'publicClient': False,
+        'redirectUris': [f'https://jupyter.{environ["EDS_DOMAIN"]}/hub/oauth_callback'],
+        'clientAuthenticatorType': 'client-secret',
+        'secret': environ["KEYCLOAK_JUPYTER_SECRET"]
+    }
+]
 
+for client in clients:
+    # create_client_response = requests.post(create_client_url, json=new_client_data, headers=auth_headers)
+    request_keycloak(
+        "client",
+        client,
+        f"{client['clientId']}"
+    )

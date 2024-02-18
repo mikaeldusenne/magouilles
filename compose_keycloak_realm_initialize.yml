@@ -16,6 +16,7 @@ services:
       - KEYCLOAK_GITLAB_SECRET=$KEYCLOAK_GITLAB_SECRET
       - KEYCLOAK_JUPYTER_SECRET=$KEYCLOAK_JUPYTER_SECRET
       - KEYCLOAK_MATRIX_SECRET=$KEYCLOAK_MATRIX_SECRET
+      - EDS_DOMAIN=$EDS_DOMAIN
     entrypoint: ['python', 'realm_setup.py']
     networks:
       - eds_network
