@@ -5,8 +5,13 @@
             "server_name": "eds-matrix-nginx"
         },
         "m.identity_server": {
-            "base_url": "https://keycloak.$EDS_DOMAIN"
+            "base_url": ""
         }
     },
-    "brand": "EDS"
+    "brand": "EDS",
+    "disable_custom_urls": true,
+    "disable_guests": true,
+    "disable_login_language_selector": true,
+    "disable_3pid_login": true,
+    "disable_password_login": true
 }
