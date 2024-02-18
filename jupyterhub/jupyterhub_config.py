@@ -74,19 +74,21 @@ notebook_dir = os.environ.get('DOCKER_NOTEBOOK_DIR', '/home/jovyan/my_amazing_re
 c.DockerSpawner.notebook_dir = notebook_dir
 
 # c.DockerSpawner.remove = True
-c.SwarmSpawner.mem_limit = '4G'
+# c.SwarmSpawner.mem_limit = '4G'
 
-c.DockerSpawner.extra_create_kwargs = {'user': 'root'}
-def create_dir_hook(spawner):
-    username = spawner.user.name
-    # on host filesystem
-    volume_path = os.path.join('./jupyterhub/jupyter/notebook_volumes/', username)
-    if not os.path.exists(volume_path):
-        os.makedirs(volume_path, exist_ok=True)
-        shutil.chown(volume_path, user=username, group='users')
+# c.DockerSpawner.extra_create_kwargs = {'user': 'root'}
+# def create_dir_hook(spawner):
+#     username = spawner.user.name
+#     # on host filesystem
+#     volume_path = os.path.join('./jupyterhub/jupyter/notebook_volumes/', username)
+#     if not os.path.exists(volume_path):
+#         os.makedirs(volume_path, exist_ok=True)
+#         shutil.chown(volume_path, user=username, group='users')
 
-c.Spawner.pre_spawn_hook = create_dir_hook
-c.DockerSpawner.volumes = { './jupyterhub/jupyter/notebook_volumes/{username}': notebook_dir}
+# c.Spawner.pre_spawn_hook = create_dir_hook
+# c.DockerSpawner.volumes = { './jupyterhub/jupyter/notebook_volumes/{username}': notebook_dir}
+
+c.DockerSpawner.volumes = { 'jupyterhub-user-{username}': notebook_dir }
 
 1
 # c = get_config()  #noqa
