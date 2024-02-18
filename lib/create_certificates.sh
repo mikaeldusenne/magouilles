@@ -13,7 +13,8 @@ function run(){
     certificate_creator.sh \
         --name "$1" \
         --dest $(realpath "$1/certificates") \
-        $([ "$1" = "keycloak" ] && printf -- "-p12" || echo '')
+        --p12
+        # $([ "$1" = "keycloak" ] && printf -- "-p12" || echo '')
     
     CRT_FILE=$(find "$1/certificates" -name '*crt*')
     
