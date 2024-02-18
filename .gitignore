@@ -1,0 +1,13 @@
+.env
+certificates
+*.crt*
+*.key*
+logs
+gitlab/config
+gitlab/data
+tmp
+
+jupyterhub/data/
+!jupyterhub/data/jupyterhub_config.py
+volume
+matrix/matrix/data

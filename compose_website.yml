@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+  website-flask:
+    container_name: "eds-website-flask"
+    image: eds-website-flask
+    build: website/flaskapp
+    depends_on: [keycloak]
+    networks:
+      - eds_network
+
+  website-vue:
+    container_name: "eds-website-vue"
+    image: eds-website-vue
+    build: website/vueapp
+    depends_on: [keycloak]
+    networks:
+      - eds_network

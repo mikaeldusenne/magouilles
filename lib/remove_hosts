@@ -1,0 +1,4 @@
+#!/bin/zsh
+
+sed -i '/#### Development/,/#### END_development/d' /etc/hosts
+

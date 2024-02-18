@@ -1,0 +1,61 @@
+version: '3'
+
+services:
+  keycloak-db:
+    image: postgres
+    container_name: "eds-postgres"
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: $KEYCLOAK_POSTGRES_PASSWORD
+      POSTGRES_USER: $KEYCLOAK_POSTGRES_USER
+    volumes:
+      - ./keycloak/postgres/volume:/var/lib/postgresql/data
+    networks:
+      - keycloak_network
+  
+  # keycloak-adminer:
+  #   image: adminer
+  #   container_name: "eds-adminer"
+  #   restart: always
+  #   # ports:
+  #   #   - 7611:8080
+  #   networks:
+  #     - eds_network
+  #     - keycloak_network
+      
+  keycloak:
+    depends_on: [keycloak-db]
+    container_name: "eds-keycloak"
+    image: eds-keycloak
+    build:
+      context: "./keycloak"
+    environment:
+      - KEYCLOAK_USER=$KEYCLOAK_USER
+      - KEYCLOAK_PASSWORD=$KEYCLOAK_USER_PASSWORD
+      - KEYCLOAK_ADMIN=$KEYCLOAK_ADMIN
+      - KEYCLOAK_ADMIN_PASSWORD=$KEYCLOAK_ADMIN_PASSWORD
+      - KEYCLOAK_PROXY_ADDRESS_FORWARDING=true
+      - KC_HTTP_ENABLED=true
+
+    command:
+      - start-dev
+      # - start
+      # https://www.keycloak.org/server/reverseproxy
+      - --proxy=edge
+      - --hostname-strict=false
+      - --hostname-strict-https=false
+      # - --http-relative-path=/keycloak
+      # - --hostname-path=/keycloak
+      # - --hostname-admin-url=https://localhost:8888/keycloak
+      - --hostname=keycloak.$EDS_DOMAIN
+      # - --hostname-port=8888
+      - --hostname-debug=true
+      - --hostname-admin-url=https://keycloak.$EDS_DOMAIN
+      - --log-level=INFO # debug | TRACE | ALL
+
+    networks:
+      - eds_network
+      - keycloak_network
+
+networks:
+  keycloak_network:

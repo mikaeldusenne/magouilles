@@ -1,0 +1,43 @@
+#!/bin/zsh
+
+set -e
+
+
+function get_ipaddr(){
+    echo $(docker inspect "$1" | jq -r '.[0].NetworkSettings.Networks.mikadatascience_default.IPAddress' | sed '/null/d')
+}
+
+IPADDR=$(get_ipaddr "eds-nginx")
+
+remove_hosts
+
+if ! grep -q 'Development' /etc/hosts; then
+    cat <<EOF >> /etc/hosts
+#### Development
+$IPADDR $EDS_DOMAIN
+$IPADDR keycloak.$EDS_DOMAIN
+$IPADDR gitlab.$EDS_DOMAIN
+$IPADDR jupyter.$EDS_DOMAIN
+$IPADDR chat.$EDS_DOMAIN
+#### END_development
+EOF
+fi
+
+function add(){
+    ipaddr=$(get_ipaddr "$1")
+    if [ -n "$ipaddr" ]; then
+        echo "--------"
+        echo "adding: $ipaddr $1"
+        echo "$ipaddr $1" | tee -a /etc/hosts
+    fi
+}
+
+sed -i '/\beds-[a-z\-]*$/d' /etc/hosts
+
+for e in $(docker ps  --format='{{.Names}}' | grep -i '^eds-'); do
+    echo ">>>>>>>> $e"
+    add "$e"
+done
+
+echo "============="
+cat /etc/hosts

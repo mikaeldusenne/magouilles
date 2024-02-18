@@ -1,0 +1,6 @@
+version: '3'
+
+networks:
+  eds_network:
+    name: eds_network
+    external: true
