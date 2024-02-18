@@ -5,10 +5,8 @@ from os import environ
 
 from tornado.httpclient import AsyncHTTPClient
 from oauthenticator.generic import GenericOAuthenticator
-from jupyterhub.auth import LocalAuthenticator
 from dockerspawner import DockerSpawner
 from jupyter_client.localinterfaces import public_ips
-from oauthenticator.generic import LocalGenericOAuthenticator
 
 def realm_stuff(e):
     return f'{environ["OAUTH2_REALM_URL"]}/protocol/openid-connect/{e}'
@@ -19,7 +17,7 @@ c.JupyterHub.ssl_key = '/my-certificates/jupyterhub.key'
 c.JupyterHub.port = 443
 
 
-c.JupyterHub.authenticator_class = LocalGenericOAuthenticator
+c.JupyterHub.authenticator_class = GenericOAuthenticator
 
 c.GenericOAuthenticator.client_id = environ['OAUTH2_CLIENT_ID']
 c.GenericOAuthenticator.client_secret = environ['OAUTH2_CLIENT_SECRET']
@@ -42,7 +40,6 @@ c.GenericOAuthenticator.scope = ['openid', 'email', 'profile']
 # c.GenericOAuthenticator.username_key = "mikkaa"
 c.Authenticator.auto_login = False
 c.GenericOAuthenticator.client_id = 'jupyterhub'
-c.LocalAuthenticator.create_system_users = False
 
 c.JupyterHub.admin_access = True # Allow admins to access notebooks owned by other users
 
