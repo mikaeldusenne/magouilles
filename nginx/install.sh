@@ -5,7 +5,7 @@ set -u
 
 echo 'setting up nginx...'
 
-SERVER_CERTS="$1"
+source .env
 
 mkdir -p nginx/certificates
 
