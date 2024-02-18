@@ -5,7 +5,7 @@ set -u
 
 source .env
 
-cd docker-openssl && docker build . -t docker-openssl
+(cd docker-openssl && docker build . -t docker-openssl)
 
 LIB_PATH=$(pwd)/lib
 if ! grep -q "$LIB_PATH" $PATH; then
