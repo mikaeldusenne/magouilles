@@ -45,8 +45,9 @@ c.JupyterHub.admin_access = True # Allow admins to access notebooks owned by oth
 
 c.JupyterHub.log_level = 'INFO'
 
-# c.Authenticator.whitelist = {}
+c.Authenticator.whitelist = {"someone"}
 c.Authenticator.admin_users = {'mika'}
+
 
 # https://github.com/jupyterhub/dockerspawner/blob/2e89ca0c5d89dbedf2c42aad06a32c2daf0376fb/examples/oauth/jupyterhub_config.py
 
@@ -76,7 +77,14 @@ c.DockerSpawner.notebook_dir = notebook_dir
 # c.DockerSpawner.remove = True
 # c.SwarmSpawner.mem_limit = '4G'
 
-# c.DockerSpawner.extra_create_kwargs = {'user': 'root'}
+# c.DockerSpawner.extra_create_kwargs = {'user': '1000:100'}
+# def create_dir_hook(spawner):
+#     username = spawner.user.name
+#     volume_path = os.path.join('./jupyterhub/jupyter/notebook_volumes/', username)
+#     if not os.path.exists(volume_path):
+#         os.makedirs(volume_path, exist_ok=True)
+#         os.chown(volume_path, 1000, 100)  # Use the UID and GID for jovyan user
+# c.Spawner.pre_spawn_hook = create_dir_hook
 # def create_dir_hook(spawner):
 #     username = spawner.user.name
 #     # on host filesystem
