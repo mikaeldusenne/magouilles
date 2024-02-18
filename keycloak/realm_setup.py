@@ -56,9 +56,11 @@ print("obtained access token", access_token)
 # Admin API endpoint for creating a new realm
 # create_realm_url = f'{keycloak_url}/admin/realms'
 
+realm_name="royaume"
+
 endpoints = dict(
     realm=f'{keycloak_url}/admin/realms',
-    client=f'{keycloak_url}/admin/realms/mynewrealm/clients',
+    client=f'{keycloak_url}/admin/realms/{realm_name}/clients',
 )
 
 # Authorization header with the access token
@@ -69,19 +71,19 @@ auth_headers = {
 
 
 def request_keycloak(endpoint_name, data, description=""):
-    resp = requests.post(endpoints['endpoint_name'], json=data, headers=auth_headers)
+    resp = requests.post(endpoints[endpoint_name], json=data, headers=auth_headers)
     if resp.status_code == 201:
         print(f"{endpoint_name} {description} : success")
     elif resp.status_code == 409:
         print(f"{endpoint_name} {description} : already exists.")
     else:
         save_pickle("./data/response.pkl", resp)
-        raise Exception(f"{endpoint_name} {description} : Failed. Status code: {create_realm_response.status_code}")
+        raise Exception(f"{endpoint_name} {description} : Failed. Status code: {resp.status_code}")
 
 
 request_keycloak("realm", {
-    'id': 'royaume',
-    'realm': 'royaume',
+    'id': realm_name,
+    'realm': realm_name,
     'enabled': True,
     'displayName': 'Royaume'
 })
@@ -97,7 +99,29 @@ clients = [
         'redirectUris': [f'https://jupyter.{environ["EDS_DOMAIN"]}/hub/oauth_callback'],
         'clientAuthenticatorType': 'client-secret',
         'secret': environ["KEYCLOAK_JUPYTER_SECRET"]
-    }
+    },
+    {
+        'clientId': 'matrix',
+        'name': 'Matrix',
+        'description': '',
+        'enabled': True,
+        'protocol': 'openid-connect',
+        'publicClient': False,
+        'redirectUris': [f'https://eds-matrix-nginx/_synapse/client/oidc/callback'],
+        'clientAuthenticatorType': 'client-secret',
+        'secret': environ["KEYCLOAK_MATRIX_SECRET"]
+    },
+    {
+        'clientId': 'gitlab',
+        'name': 'Gitlab',
+        'description': '',
+        'enabled': True,
+        'protocol': 'openid-connect',
+        'publicClient': False,
+        'redirectUris': [f'https://eds-gitlab/users/auth/openid_connect/callback'],
+        'clientAuthenticatorType': 'client-secret',
+        'secret': environ["KEYCLOAK_GITLAB_SECRET"]
+    },
 ]
 
 for client in clients:
