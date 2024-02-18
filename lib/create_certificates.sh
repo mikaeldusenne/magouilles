@@ -2,7 +2,7 @@
 
 set -e
 
-a=(keycloak gitlab jupyterhub jupyterhub/jupyter matrix/matrix vue)
+a=(keycloak gitlab jupyterhub jupyterhub/jupyter matrix/matrix matrix/element vue)
 
 function run(){
     echo "installing SSL certificates for $1"

@@ -3,7 +3,8 @@ version: '3'
 services:
   keycloak-db:
     image: postgres
-    container_name: "eds-postgres"
+    image: 'eds-keycloak-postgres'
+    container_name: "eds-keycloak-postgres"
     restart: always
     environment:
       POSTGRES_PASSWORD: $KEYCLOAK_POSTGRES_PASSWORD

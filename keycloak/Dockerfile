@@ -8,7 +8,7 @@ FROM keycloak/keycloak:latest
 
 WORKDIR /opt/keycloak
 
-COPY certificates/server.p12 /etc/x509/https/
+COPY certificates/keycloak.p12 /etc/x509/https/server.p12
 
 ###################################
 USER root
@@ -26,7 +26,7 @@ USER keycloak
 
 # change these values to point to a running postgres instance
 ENV KC_DB=postgres
-ENV KC_DB_URL="jdbc:postgresql://eds-postgres/postgres"
+ENV KC_DB_URL="jdbc:postgresql://eds-keycloak-postgres/postgres"
 ENV KC_DB_USERNAME=postgres
 ENV KC_DB_PASSWORD=$KEYCLOAK_POSTGRES_PASSWORD
 
