@@ -5,6 +5,7 @@ FROM keycloak/keycloak:latest
 # ENV KC_HEALTH_ENABLED=true
 # ENV KC_METRICS_ENABLED=true
 
+ENV KC_DB=postgres
 
 WORKDIR /opt/keycloak
 
@@ -23,4 +24,11 @@ RUN keytool -import -trustcacerts -alias jupyterhub -file /etc/x509/https/jupyte
 
 USER keycloak
 ###################################
+
+# change these values to point to a running postgres instance
+ENV KC_DB=postgres
+ENV KC_DB_URL="jdbc:postgresql://eds-postgres/postgres"
+ENV KC_DB_USERNAME=postgres
+# ENV KC_DB_PASSWORD=$KEYCLOAK_POSTGRES_PASSWORD
+# ENV KC_DB_PASSWORD=
 
