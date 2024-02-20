@@ -20,6 +20,6 @@ services:
       - EDS_CONTAINER_PREFIX
     command: ['realm_setup.py']
     networks:
-      - "${EDS_CONTAINER_PREFIX:-eds}-network"
+      - eds_network
       - keycloak_network
 

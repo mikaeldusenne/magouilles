@@ -12,7 +12,6 @@ services:
       - ./keycloak/postgres/volume/data:/var/lib/postgresql/data
     networks:
       - keycloak_network
-      - "${EDS_CONTAINER_PREFIX:-eds}-network"
   
       
   keycloak:
@@ -43,7 +42,7 @@ services:
       - --hostname-admin-url=https://keycloak.$EDS_DOMAIN
       - --log-level=WARN # debug | TRACE | ALL
     networks:
-      - "${EDS_CONTAINER_PREFIX:-eds}-network"
+      - eds_network
       - keycloak_network
 
 networks:

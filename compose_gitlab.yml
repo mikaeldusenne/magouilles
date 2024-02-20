@@ -53,5 +53,5 @@ services:
     ports:
       - "7680:443"
     networks:
-      - "${EDS_CONTAINER_PREFIX:-eds}-network"
+      - eds_network
     

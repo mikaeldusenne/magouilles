@@ -28,7 +28,7 @@ services:
       - ./matrix/matrix/data/:/data
     networks:
       - matrix_network
-      - "${EDS_CONTAINER_PREFIX:-eds}-network"
+      - eds_network
     entrypoint: ["/start.sh"]
 
   matrix-element-web:
@@ -41,7 +41,7 @@ services:
       - ./matrix/element/element-config.json:/app/config.json
     networks:
       - matrix_network
-      - "${EDS_CONTAINER_PREFIX:-eds}-network"
+      - eds_network
 
 networks:
   matrix_network:

@@ -26,4 +26,5 @@ services:
       JUPYTERHUB_API_URL: "https://eds-jupyterhub/hub/api"
     command: jupyterhub -f /srv/jupyterhub/jupyterhub_config.py
     networks:
-      - "${EDS_CONTAINER_PREFIX:-eds}-network"
+      - eds_network
+      

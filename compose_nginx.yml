@@ -16,6 +16,5 @@ services:
     ports:
       - "8888:443"
     networks:
-      - default
-      - "${EDS_CONTAINER_PREFIX:-eds}-network"
+      - eds_network
     command: /bin/sh -c "sleep 5 && nginx -g 'daemon off;'"
