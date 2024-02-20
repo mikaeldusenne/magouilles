@@ -9,9 +9,9 @@
 # For more information on how to configure Synapse, including a complete accounting of
 # each option, go to docs/usage/configuration/config_documentation.md or
 # https://element-hq.github.io/synapse/latest/usage/configuration/config_documentation.html
-server_name: "eds-matrix"
+server_name: "$EDS_CONTAINER_PREFIX-matrix"
 pid_file: /data/homeserver.pid
-public_baseurl: https://matrix.eds.mikaeldusenne.com
+public_baseurl: https://matrix.$EDS_DOMAIN
 listeners:
   - port: 8008
     tls: false
@@ -31,20 +31,20 @@ database:
     user: matrix
     password: $MATRIX_POSTGRES_PASSWORD
     database: matrix
-    host: eds-matrix-postgres
+    host: $EDS_CONTAINER_PREFIX-matrix-postgres
     cp_min: 5
     cp_max: 10
     
-log_config: "/data/eds-matrix.log.config"
+log_config: "/data/$EDS_CONTAINER_PREFIX-matrix.log.config"
 
 media_store_path: /data/media_store
 registration_shared_secret: "$MATRIX_REGISTRATION_SHARED_SECRET"
 report_stats: false
 macaroon_secret_key: "$MATRIX_MACAROON_SECRET_KEY"
 form_secret: "MATRIX_FORM_SECRET"
-signing_key_path: "/data/eds-matrix.signing.key"
+signing_key_path: "/data/$EDS_CONTAINER_PREFIX-matrix.signing.key"
 trusted_key_servers:
-  - server_name: "eds-matrix"
+  - server_name: "$EDS_CONTAINER_PREFIX-matrix"
     
 oidc_providers:
   - idp_id: keycloak
@@ -55,11 +55,11 @@ oidc_providers:
     scopes: ["openid", "profile"]
     
     authorization_endpoint: "https://keycloak.$EDS_DOMAIN/realms/royaume/protocol/openid-connect/auth"
-    issuer: "https://eds-keycloak:8443/realms/royaume"
+    issuer: "https://$EDS_CONTAINER_PREFIX-keycloak:8443/realms/royaume"
     
-    token_endpoint: "https://eds-keycloak:8443/realms/royaume/protocol/openid-connect/token"
-    userinfo_endpoint: "https://eds-keycloak:8443/realms/royaume/protocol/openid-connect/userinfo"
-    jwks_uri: "https://eds-keycloak:8443/realms/royaume/protocol/openid-connect/certs"
+    token_endpoint: "https://$EDS_CONTAINER_PREFIX-keycloak:8443/realms/royaume/protocol/openid-connect/token"
+    userinfo_endpoint: "https://$EDS_CONTAINER_PREFIX-keycloak:8443/realms/royaume/protocol/openid-connect/userinfo"
+    jwks_uri: "https://$EDS_CONTAINER_PREFIX-keycloak:8443/realms/royaume/protocol/openid-connect/certs"
     
     user_mapping_provider:
       config:

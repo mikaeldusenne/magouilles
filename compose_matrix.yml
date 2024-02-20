@@ -22,7 +22,7 @@ services:
     build:
       context: "./matrix/matrix"
     environment:
-      - SYNAPSE_SERVER_NAME=eds-matrix
+      - SYNAPSE_SERVER_NAME=${EDS_IMAGE_PREFIX:-eds}-matrix
       - SYNAPSE_REPORT_STATS=no
     volumes:
       - ./matrix/matrix/data/:/data

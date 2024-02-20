@@ -2,7 +2,7 @@
     "default_server_config": {
         "m.homeserver": {
             "base_url": "https://matrix.$EDS_DOMAIN",
-            "server_name": "eds-matrix-nginx"
+            "server_name": "$EDS_CONTAINER_PREFIX-matrix-nginx"
         },
         "m.identity_server": {
             "base_url": ""
