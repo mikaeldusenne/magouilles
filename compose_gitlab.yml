@@ -15,8 +15,8 @@ services:
     environment:
       GITLAB_LOG_LEVEL: WARN
       GITLAB_OMNIBUS_CONFIG: |
-        # external_url 'https://eds-gitlab'
-        external_url 'https://localhost'
+        external_url 'https://${EDS_CONTAINER_PREFIX:-eds}-gitlab'
+        # external_url 'https://localhost'
         nginx['listen_https'] = true
         nginx['listen_port'] = 443
         nginx['ssl_certificate'] = "/etc/gitlab/ssl/gitlab.crt.pem"
