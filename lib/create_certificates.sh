@@ -2,12 +2,13 @@
 
 set -e
 
-a=(keycloak gitlab jupyterhub jupyterhub/jupyter matrix/matrix matrix/element vue)
+COPY_DEST=(keycloak gitlab jupyterhub jupyterhub/jupyter matrix/matrix matrix/element vue)
 
 while [[ $# > 0 ]];do
 	case "$1" in
+        --name) NAME=$2; shift ;;
         --copy) SHOULD_COPY=1 ;;
-        --*) error "unsupported argument: $1";;
+        *) error "unsupported argument: $1";;
 	esac
 	shift
 done
@@ -24,7 +25,7 @@ function run(){
     CRT_FILE=$(find "$1/certificates" -name '*crt*')
     
     if [ -n "$SHOULD_COPY" ]; then
-        for ee in $a; do
+        for ee in $COPY_DEST; do
             if [ "$ee" != "$1" ]; then
                 if ! [ -d "$ee" ]; then
                     echo "creating $ee"
@@ -41,4 +42,4 @@ function run(){
 #     run $e
 # done
 
-run "$1"
+run "$NAME"

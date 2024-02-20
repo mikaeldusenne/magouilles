@@ -26,7 +26,7 @@ while [[ $# > 0 ]];do
         --dest) DEST=$(validate "$1" "$2") ;;
         --name) NAME=$(validate "$1" "$2"); shift ;;
         --p12) P12=1 ;;
-        --*) error "unsupported argument: $1";;
+        *) error "unsupported argument: $1";;
 	esac
 	shift
 done
