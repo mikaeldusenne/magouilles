@@ -1,8 +1,13 @@
 from pprint import pformat
-import requests
 import os
 from os import environ
 import pickle
+import time
+
+import requests
+from requests.exceptions import ConnectionError
+
+
 
 def load_pickle(path):
     print('loading pickle from {}'.format(path))
@@ -22,17 +27,27 @@ username = environ['KEYCLOAK_ADMIN'] # The Keycloak admin username
 password = environ['KEYCLOAK_ADMIN_PASSWORD'] # The Keycloak admin password
 realm = 'master' # Master realm is used for authentication
 
+def wait_for_availability():
+    wheel="|/-\\"
+    sleep_time=1
+    sleep_factor=1
+    k=0
+    status_code = None
+    while status_code is None:
+        try:
+            resp = requests.get(f"{keycloak_url}/realms/master")
+            status_code = resp.status_code
+        except ConnectionError as ex:
+            print(wheel[k % len(wheel)], end="\r")
+        time.sleep(sleep_time)
+        sleep_time *= sleep_factor
+    
+    assert status_code == 200, f"request HTTP error: {status_code}"
+    return status_code
+
+wait_for_availability()
 
 token_url = f'{keycloak_url}/realms/{realm}/protocol/openid-connect/token'
-headers = {
-    'Content-Type': 'application/x-www-form-urlencoded'
-}
-payload = {
-    'client_id': client_id,
-    'username': username,
-    'password': password,
-    'grant_type': 'password'
-}
 
 response = requests.post(
     token_url,
@@ -66,7 +81,7 @@ auth_headers = {
 }
 
 
-def request_keycloak(endpoint_name, data):
+def request_keycloak(endpoint_name, data, description=""):
     resp = requests.post(endpoints[endpoint_name], json=data, headers=auth_headers)
     if resp.status_code == 201:
         print(f"{endpoint_name} {description} : success")
@@ -130,4 +145,5 @@ for client in clients:
     request_keycloak(
         "client",
         client,
+        f"{client['clientId']}"
     )

@@ -18,7 +18,8 @@ services:
       - KEYCLOAK_MATRIX_SECRET
       - EDS_DOMAIN
       - EDS_CONTAINER_PREFIX
-    command: ['realm_setup.py']
+    entrypoint: ['python', './realm_setup.py']
+    # entrypoint: ['sleep', '600']
     networks:
       - eds_network
       - keycloak_network
