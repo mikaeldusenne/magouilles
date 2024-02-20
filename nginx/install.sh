@@ -17,6 +17,7 @@ else
     cp -i "./nginx/certificates/nginx.crt" ./nginx/certificates/fullchain.pem
 fi
 
-sed "s/\$EDS_DOMAIN/${EDS_DOMAIN}/" nginx/nginx_template.conf > nginx/nginx.conf
+EDS_CONTAINER_PREFIX=${EDS_CONTAINER_PREFIX:-eds}
+envsubst '$EDS_CONTAINER_PREFIX,$EDS_DOMAIN' < nginx_template.conf > nginx.conf
 
 echo 'Done setting up nginx.'
