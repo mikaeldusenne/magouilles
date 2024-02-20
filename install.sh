@@ -31,8 +31,6 @@ function create_env(){
     fi
 }
 
-echo -e "\n######## AUTOMATICALLY GENERATED PASSWORDS\n" >> .env
-
 while IFS= read -r secret; do
     create_env "$secret"
 done <<EOF
