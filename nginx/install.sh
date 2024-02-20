@@ -1,7 +1,6 @@
 #!/bin/bash
 
 set -e
-set -u
 
 echo 'setting up nginx...'
 
