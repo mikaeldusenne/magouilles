@@ -29,9 +29,9 @@ database:
   name: psycopg2
   args:
     user: matrix
-    password: $MATRIX_POSTGRES_PASSWORD
+    password: "$MATRIX_POSTGRES_PASSWORD"
     database: matrix
-    host: $EDS_CONTAINER_PREFIX-matrix-postgres
+    host: "$EDS_CONTAINER_PREFIX-matrix-postgres"
     cp_min: 5
     cp_max: 10
     
