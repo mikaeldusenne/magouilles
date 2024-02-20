@@ -10,7 +10,7 @@ function error(){
 }
 
 function validate(){
-    if [[ -n "$2" && $2 != "--"* ]]; then
+    if [[ $2 != "--"* ]]; then
         echo "$2"
     else
         echo "validation failed for argument to $1 : <<$2>>" >&2
