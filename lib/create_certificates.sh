@@ -11,12 +11,14 @@ function error(){
 }
 
 SHOULD_COPY="0"
+SAN=""
 
 while [[ $# > 0 ]];do
 	case "$1" in
         --name) NAME=$2; shift ;;
+        --san) SAN=$2; shift ;;
         --copy) SHOULD_COPY=1 ;;
-        *) error "unsupported argument: $1";;
+        *) error "dffunsupported argument: $1";;
 	esac
 	shift
 done
@@ -26,8 +28,9 @@ function run(){
     echo "installing SSL certificates for $1"
     mkdir -p "$1/certificates"
     
-    certificate_creator.sh \
+    ./lib/certificate_creator.sh \
         --name "$1" \
+        --san "$SAN" \
         --dest $(realpath "$1/certificates") \
         --p12
     
