@@ -2,6 +2,7 @@
 
 set -e
 
+cp -i /etc/hosts /etc/hosts.backup
 
 function get_ipaddr(){
     echo $(docker inspect "$1" | jq -r '.[0].NetworkSettings.Networks.mikadatascience_default.IPAddress' | sed '/null/d')
@@ -11,15 +12,15 @@ IPADDR=$(get_ipaddr "eds-nginx")
 
 remove_hosts
 
+echo -e '\n#### Development' >> /etc/hosts
+
 if ! grep -q 'Development' /etc/hosts; then
     cat <<EOF >> /etc/hosts
-#### Development
 $IPADDR $EDS_DOMAIN
 $IPADDR keycloak.$EDS_DOMAIN
 $IPADDR gitlab.$EDS_DOMAIN
 $IPADDR jupyter.$EDS_DOMAIN
 $IPADDR chat.$EDS_DOMAIN
-#### END_development
 EOF
 fi
 
@@ -32,12 +33,15 @@ function add(){
     fi
 }
 
-sed -i '/\beds-[a-z\-]*$/d' /etc/hosts
+sed -i "/${EDS_CONTAINER_PREFIX:-eds}-[a-z\-]*$/d" /etc/hosts
 
-for e in $(docker ps  --format='{{.Names}}' | grep -i '^eds-'); do
+for e in $(docker ps  --format='{{.Names}}' | grep -i "^${EDS_CONTAINER_PREFIX:-eds}-"); do
     echo ">>>>>>>> $e"
     add "$e"
 done
 
+echo -e '\n#### END_development' >> /etc/hosts
+
 echo "============="
+
 cat /etc/hosts
