@@ -10,6 +10,8 @@ function error(){
 	exit 1
 }
 
+SHOULD_COPY="0"
+
 while [[ $# > 0 ]];do
 	case "$1" in
         --name) NAME=$2; shift ;;
@@ -31,7 +33,7 @@ function run(){
     
     CRT_FILE=$(find "$1/certificates" -name '*crt*')
     
-    if [ -n "$SHOULD_COPY" ]; then
+    if [ "$SHOULD_COPY" = "1" ]; then
         for ee in $COPY_DEST; do
             if [ "$ee" != "$1" ]; then
                 if ! [ -d "$ee" ]; then
