@@ -12,3 +12,4 @@ jupyterhub/data/
 volume
 matrix/matrix/data
 nginx/nginx.conf
+element-config.json
