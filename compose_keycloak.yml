@@ -3,17 +3,26 @@ version: '3'
 services:
   keycloak-db:
     image: postgres
-    container_name: "${EDS_CONTAINER_PREFIX:-eds}-postgres"
+    container_name: "${EDS_CONTAINER_PREFIX:-eds}-keycloak-postgres"
     restart: always
     environment:
       POSTGRES_PASSWORD: $KEYCLOAK_POSTGRES_PASSWORD
-      POSTGRES_USER: $KEYCLOAK_POSTGRES_USER
+      # POSTGRES_USER: $KEYCLOAK_POSTGRES_USER
+      POSTGRES_USER: keycloak
     volumes:
       - ./keycloak/postgres/volume/data:/var/lib/postgresql/data
     networks:
       - keycloak_network
   
-      
+  keycloak-adminer:
+    image: adminer
+    container_name: "${EDS_CONTAINER_PREFIX:-eds}-keycloak-adminer"
+    restart: always
+    ports:
+      - 7611:8080
+    networks:
+      - keycloak_network
+
   keycloak:
     depends_on: [keycloak-db]
     container_name: "${EDS_CONTAINER_PREFIX:-eds}-keycloak"
@@ -25,11 +34,6 @@ services:
       - KEYCLOAK_ADMIN_PASSWORD=$KEYCLOAK_ADMIN_PASSWORD
       - KEYCLOAK_PROXY_ADDRESS_FORWARDING=true
       - KC_HTTP_ENABLED=true
-      # - KC_DB=postgres
-      # - KC_DB_URL="jdbc:postgresql://eds-postgres/postgres"
-      - KC_DB_USERNAME=$KEYCLOAK_POSTGRES_USER
-      - KC_DB_PASSWORD=$KEYCLOAK_POSTGRES_PASSWORD
-
     command:
       - start-dev
       # - start
@@ -38,9 +42,13 @@ services:
       - --hostname-strict=false
       - --hostname-strict-https=false
       - --hostname=keycloak.$EDS_DOMAIN
+      - --db-url=jdbc:postgresql://${EDS_CONTAINER_PREFIX:-eds}-keycloak-postgres/postgres
       - --hostname-debug=true
       - --hostname-admin-url=https://keycloak.$EDS_DOMAIN
-      - --log-level=WARN # debug | TRACE | ALL
+      - --log-level=WARN # debug | TRACE | ALL | WARN
+      - --db=postgres
+      - --db-username=keycloak
+      - --db-password=$KEYCLOAK_POSTGRES_PASSWORD
     networks:
       - eds_network
       - keycloak_network
