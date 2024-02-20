@@ -12,40 +12,42 @@ services:
       - './gitlab/logs:/var/log/gitlab'
       - './gitlab/data:/var/opt/gitlab'
     shm_size: '256m'
+    # external_url 'https://localhost'
+    # nginx['redirect_http_to_https'] = true
+    # gitlab_rails['omniauth_auto_sign_in_with_provider'] = 'openid_connect'
+    # "ssl" => { "verify" => false }
+    # external_url 'https://${EDS_CONTAINER_PREFIX:-eds}-gitlab'
     environment:
       GITLAB_LOG_LEVEL: WARN
       GITLAB_OMNIBUS_CONFIG: |
-        external_url 'https://${EDS_CONTAINER_PREFIX:-eds}-gitlab'
-        # external_url 'https://localhost'
+        external_url "https://gitlab.$EDS_DOMAIN"
         nginx['listen_https'] = true
         nginx['listen_port'] = 443
-        nginx['ssl_certificate'] = "/etc/gitlab/ssl/gitlab.crt.pem"
-        nginx['ssl_certificate_key'] = "/etc/gitlab/ssl/gitlab.key.pem"
+        nginx['ssl_certificate'] = "/etc/gitlab/ssl/gitlab.crt"
+        nginx['ssl_certificate_key'] = "/etc/gitlab/ssl/gitlab.key"
         gitlab_rails['omniauth_enabled'] = true
         gitlab_rails['omniauth_allow_single_sign_on'] = ['openid_connect']
         gitlab_rails['omniauth_sync_email_from_provider'] = 'openid_connect'
         gitlab_rails['omniauth_sync_profile_from_provider'] = ['openid_connect']
         gitlab_rails['omniauth_sync_profile_attributes'] = ['email']
-        # gitlab_rails['omniauth_auto_sign_in_with_provider'] = 'openid_connect'
         gitlab_rails['omniauth_block_auto_created_users'] = false
         gitlab_rails['omniauth_auto_link_ldap_user'] = false
-        # "ssl" => { "verify" => false }
         gitlab_rails['omniauth_providers'] = [
           {
             "name" => "openid_connect",
             "label" => "Keycloak",
             "args" => {
               "name" => "openid_connect",
-              "scope" => ["openid","profile"],
+              "scope" => ["openid", "profile"],
               "response_type" => "code",
-              "issuer" => "https://eds-keycloak:8443/realms/royaume",
+              "issuer" => "https://${EDS_CONTAINER_PREFIX:-eds}-keycloak:8443/realms/royaume",
               "discovery" => true,
               "client_auth_method" => "query",
-              "uid_field" => "mika",
+              "uid_field" => "preferred_username",
               "client_options" => {
                 "identifier" => "gitlab",
                 "secret" => "$KEYCLOAK_GITLAB_SECRET",
-                "redirect_uri" => "https://localhost/users/auth/openid_connect/callback",
+                "redirect_uri" => "https://gitlab.$EDS_DOMAIN/users/auth/openid_connect/callback",
               }
             }
           }
