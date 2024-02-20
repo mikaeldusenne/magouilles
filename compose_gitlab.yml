@@ -1,10 +1,6 @@
 version: '3'
 
 services:
-services:
-  nginx:
-    depends_on:
-      - gitlab
   gitlab:
     container_name: "${EDS_CONTAINER_PREFIX:-eds}-gitlab"
     image: "${EDS_IMAGE_PREFIX:-eds}-gitlab"
