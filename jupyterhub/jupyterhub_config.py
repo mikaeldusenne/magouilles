@@ -59,9 +59,8 @@ c.JupyterHub.hub_ip = "0.0.0.0"
 c.JupyterHub.hub_connect_ip = 'eds-jupyterhub'  # IP as seen on the docker network. Can also be a hostname.
 # c.JupyterHub.hub_ip = ''
 
-
 c.JupyterHub.spawner_class = DockerSpawner
-c.DockerSpawner.image = environ['JUPYTERHUB_JUPYTER_IMAGE_NAME']
+c.DockerSpawner.image = f"{environ.get('EDS_IMAGE_PREFIX', 'eds')}-jupyter"
 c.Spawner.default_url = '/lab'
 c.DockerSpawner.network_name = 'eds_network'
 c.DockerSpawner.hub_connect_url = 'https://eds-jupyterhub'
