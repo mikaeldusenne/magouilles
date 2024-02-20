@@ -23,10 +23,10 @@ P12=""
 while [[ $# > 0 ]];do
 	case "$1" in
         --common-name) COMMON_NAME=$(validate "$1" "$2"); shift ;;
-        --dest) DEST=$(validate "$1" "$2") ;;
+        --dest) DEST=$(validate "$1" "$2"); shift ;;
         --name) NAME=$(validate "$1" "$2"); shift ;;
         --p12) P12=1 ;;
-        *) error "unsupported argument: $1";;
+        *) error "[certificate_creator] unsupported argument: $1";;
 	esac
 	shift
 done

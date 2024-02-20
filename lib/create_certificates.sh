@@ -1,8 +1,14 @@
 #!/bin/zsh
 
 set -e
+set -u
 
 COPY_DEST=(keycloak gitlab jupyterhub jupyterhub/jupyter matrix/matrix matrix/element vue)
+
+function error(){
+	echo "$1" >&2
+	exit 1
+}
 
 while [[ $# > 0 ]];do
 	case "$1" in
@@ -12,6 +18,7 @@ while [[ $# > 0 ]];do
 	esac
 	shift
 done
+
 
 function run(){
     echo "installing SSL certificates for $1"
