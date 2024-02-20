@@ -1,3 +1,4 @@
+from pprint import pformat
 import requests
 import os
 from os import environ
@@ -15,7 +16,7 @@ def save_pickle(path, o):
         pickle.dump(o, f)
 
 # Keycloak server URL
-keycloak_url = 'http://eds-keycloak:8080'
+keycloak_url = f"http://{environ.get('EDS_CONTAINER_PREFIX', 'eds')}-keycloak:8080"
 client_id = 'admin-cli' # Default client for administration
 username = environ['KEYCLOAK_ADMIN'] # The Keycloak admin username
 password = environ['KEYCLOAK_ADMIN_PASSWORD'] # The Keycloak admin password
@@ -44,17 +45,12 @@ response = requests.post(
     headers={'Content-Type': 'application/x-www-form-urlencoded'}
 )
 
-
 response_data = response.json()
 access_token = response_data['access_token']
 
-print("obtained access token", access_token)
+print("obtained access token.")
 
-
-
-
-# Admin API endpoint for creating a new realm
-# create_realm_url = f'{keycloak_url}/admin/realms'
+################
 
 realm_name="royaume"
 
@@ -70,7 +66,7 @@ auth_headers = {
 }
 
 
-def request_keycloak(endpoint_name, data, description=""):
+def request_keycloak(endpoint_name, data):
     resp = requests.post(endpoints[endpoint_name], json=data, headers=auth_headers)
     if resp.status_code == 201:
         print(f"{endpoint_name} {description} : success")
@@ -78,7 +74,13 @@ def request_keycloak(endpoint_name, data, description=""):
         print(f"{endpoint_name} {description} : already exists.")
     else:
         save_pickle("./data/response.pkl", resp)
-        raise Exception(f"{endpoint_name} {description} : Failed. Status code: {resp.status_code}")
+        raise Exception(f"""
+{endpoint_name} : Failed. Status code: {resp.status_code}
+
+--------
+{pformat(data)}
+--------
+""")
 
 
 request_keycloak("realm", {
@@ -118,16 +120,14 @@ clients = [
         'enabled': True,
         'protocol': 'openid-connect',
         'publicClient': False,
-        'redirectUris': [f'https://eds-gitlab/users/auth/openid_connect/callback'],
+        'redirectUris': [f'https://jupyter.{environ["EDS_DOMAIN"]}/users/auth/openid_connect/callback'],
         'clientAuthenticatorType': 'client-secret',
         'secret': environ["KEYCLOAK_GITLAB_SECRET"]
     },
 ]
 
 for client in clients:
-    # create_client_response = requests.post(create_client_url, json=new_client_data, headers=auth_headers)
     request_keycloak(
         "client",
         client,
-        f"{client['clientId']}"
     )

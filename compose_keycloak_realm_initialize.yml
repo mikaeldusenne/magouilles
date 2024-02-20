@@ -3,22 +3,23 @@ version: '3'
 services:
   python:
     depends_on: [keycloak]
-    container_name: "eds-keycloak-python"
-    image: eds-keycloak-python
+    container_name: "${EDS_CONTAINER_PREFIX:-eds}-keycloak-python"
+    image: "${EDS_IMAGE_PREFIX:-eds}-keycloak-python"
     build:
       context: "./docker-python"
     volumes:
       - ./keycloak/realm_setup.py:/app/realm_setup.py
       - ./keycloak/python_setup_data/:/app/data/
     environment:
-      - KEYCLOAK_ADMIN_PASSWORD=$KEYCLOAK_ADMIN_PASSWORD
-      - KEYCLOAK_ADMIN=$KEYCLOAK_ADMIN
-      - KEYCLOAK_GITLAB_SECRET=$KEYCLOAK_GITLAB_SECRET
-      - KEYCLOAK_JUPYTER_SECRET=$KEYCLOAK_JUPYTER_SECRET
-      - KEYCLOAK_MATRIX_SECRET=$KEYCLOAK_MATRIX_SECRET
-      - EDS_DOMAIN=$EDS_DOMAIN
-    entrypoint: ['python', 'realm_setup.py']
+      - KEYCLOAK_ADMIN_PASSWORD
+      - KEYCLOAK_ADMIN
+      - KEYCLOAK_GITLAB_SECRET
+      - KEYCLOAK_JUPYTER_SECRET
+      - KEYCLOAK_MATRIX_SECRET
+      - EDS_DOMAIN
+      - EDS_CONTAINER_PREFIX
+    command: ['realm_setup.py']
     networks:
-      - eds_network
+      - "${EDS_CONTAINER_PREFIX:-eds}-network"
       - keycloak_network
 

@@ -25,11 +25,13 @@ docker network create $EDS_NETWORK || echo "network $EDS_NETWORK already exists.
 function create_env(){
     echo "creating secret key for '$1'"
     if ! grep -q "^export $1=" .env; then
-        echo "\nexport $1='$(randompass 64 'a-zA-Z0-9_')'" >> .env
+        echo "export $1='$(randompass 64 'a-zA-Z0-9_')'" >> .env
     else
         echo "$1 already exists."
     fi
 }
+
+echo -e "\n######## AUTOMATICALLY GENERATED PASSWORDS\n" >> .env
 
 while IFS= read -r secret; do
     create_env "$secret"
@@ -49,5 +51,9 @@ EOF
 bash ./jupyterhub/install.sh
 bash ./matrix/install.sh
 sudo bash ./nginx/install.sh
+
+
+# set up realm and OIDC clients
+docker compose -f compose_keycloak.yml, compose_keycloak_realm_initialize.yml up --build --abort-on-container-exit
 
 echo 'done.'

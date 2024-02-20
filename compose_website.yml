@@ -1,17 +1,21 @@
 version: '3.8'
 services:
+  nginx:
+    depends_on:
+      - website-flask
+      
   website-flask:
-    container_name: "eds-website-flask"
-    image: eds-website-flask
+    container_name: "${EDS_CONTAINER_PREFIX:-eds}-website-flask"
+    image: "${EDS_IMAGE_PREFIX:-eds}-website-flask"
     build: website/flaskapp
     depends_on: [keycloak]
     networks:
-      - eds_network
+      - "${EDS_CONTAINER_PREFIX:-eds}-network"
 
-  website-vue:
-    container_name: "eds-website-vue"
-    image: eds-website-vue
-    build: website/vueapp
-    depends_on: [keycloak]
-    networks:
-      - eds_network
+  # website-vue:
+  #   container_name: "${EDS_CONTAINER_PREFIX:-eds}-website-vue"
+  #   image: "${EDS_IMAGE_PREFIX:-eds}-website-vue"
+  #   build: website/vueapp
+  #   depends_on: [keycloak]
+  #   networks:
+  #     - eds_network

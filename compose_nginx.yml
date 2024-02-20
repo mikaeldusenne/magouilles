@@ -3,12 +3,7 @@ version: '3'
 services:
   nginx:
     image: nginx:alpine
-    container_name: "eds-nginx"
-    depends_on:
-      - keycloak
-      - matrix
-      - jupyterhub
-      - gitlab
+    container_name: "${EDS_CONTAINER_PREFIX:-eds}-nginx"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./nginx/certificates/privkey.pem:/etc/ssl/private/nginx.key:ro
@@ -17,5 +12,5 @@ services:
       - "8888:443"
     networks:
       - default
-      - eds_network
+      - "${EDS_CONTAINER_PREFIX:-eds}-network"
     command: /bin/sh -c "sleep 5 && nginx -g 'daemon off;'"

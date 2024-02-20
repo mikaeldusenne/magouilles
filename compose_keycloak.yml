@@ -1,9 +1,13 @@
 version: '3'
 
 services:
+  nginx:
+    depends_on:
+      - keycloak
+
   keycloak-db:
     image: postgres
-    container_name: "eds-postgres"
+    container_name: "${EDS_CONTAINER_PREFIX:-eds}-postgres"
     restart: always
     environment:
       POSTGRES_PASSWORD: $KEYCLOAK_POSTGRES_PASSWORD
@@ -12,18 +16,16 @@ services:
       - ./keycloak/postgres/volume/data:/var/lib/postgresql/data
     networks:
       - keycloak_network
-      - eds_network
+      - "${EDS_CONTAINER_PREFIX:-eds}-network"
   
       
   keycloak:
     depends_on: [keycloak-db]
-    container_name: "eds-keycloak"
-    image: eds-keycloak
+    container_name: "${EDS_CONTAINER_PREFIX:-eds}-keycloak"
+    image: "${EDS_IMAGE_PREFIX:-eds}keycloak"
     build:
       context: "./keycloak"
     environment:
-      - KEYCLOAK_USER=$KEYCLOAK_USER
-      - KEYCLOAK_PASSWORD=$KEYCLOAK_USER_PASSWORD
       - KEYCLOAK_ADMIN=$KEYCLOAK_ADMIN
       - KEYCLOAK_ADMIN_PASSWORD=$KEYCLOAK_ADMIN_PASSWORD
       - KEYCLOAK_PROXY_ADDRESS_FORWARDING=true
@@ -40,19 +42,14 @@ services:
       - --proxy=edge
       - --hostname-strict=false
       - --hostname-strict-https=false
-      # - --http-relative-path=/keycloak
-      # - --hostname-path=/keycloak
-      # - --hostname-admin-url=https://localhost:8888/keycloak
       - --hostname=keycloak.$EDS_DOMAIN
-      # - --hostname-port=8888
       - --hostname-debug=true
       - --hostname-admin-url=https://keycloak.$EDS_DOMAIN
       - --log-level=WARN # debug | TRACE | ALL
-      # - --db-url="jdbc:postgresql://eds-keycloak-postgres/postgres"
-    # entrypoint: ['sleep', '600']
     networks:
-      - eds_network
+      - "${EDS_CONTAINER_PREFIX:-eds}-network"
       - keycloak_network
 
 networks:
   keycloak_network:
+    

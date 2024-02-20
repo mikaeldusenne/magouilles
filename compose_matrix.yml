@@ -1,15 +1,17 @@
 version: '3'
 
 services:
+  nginx:
+    depends_on:
+      - matrix
+      
   matrix-postgres:
     image: docker.io/postgres:latest
-    container_name: "eds-matrix-postgres"
+    container_name: "${EDS_CONTAINER_PREFIX:-eds}-matrix-postgres"
     environment:
       - POSTGRES_DB=matrix
       - POSTGRES_USER=matrix
       - POSTGRES_PASSWORD=$MATRIX_POSTGRES_PASSWORD
-      # ensure the database gets created correctly
-      # https://matrix-org.github.io/synapse/latest/postgres.html#set-up-database
       - POSTGRES_INITDB_ARGS=--encoding=UTF-8 --lc-collate=C --lc-ctype=C
     volumes:
       - ./matrix/postgres/volume/:/var/lib/postgresql/data
@@ -19,8 +21,8 @@ services:
     
   matrix:
     depends_on: [matrix-postgres, keycloak]
-    container_name: "eds-matrix"
-    image: eds-matrix
+    container_name: "${EDS_CONTAINER_PREFIX:-eds}-matrix"
+    image: "${EDS_IMAGE_PREFIX:-eds}-matrix"
     build:
       context: "./matrix/matrix"
     environment:
@@ -30,20 +32,20 @@ services:
       - ./matrix/matrix/data/:/data
     networks:
       - matrix_network
-      - eds_network
+      - "${EDS_CONTAINER_PREFIX:-eds}-network"
     entrypoint: ["/start.sh"]
 
   matrix-element-web:
     depends_on: [matrix]
-    container_name: "eds-matrix-element"
-    image: eds-matrix-element
+    container_name: "${EDS_CONTAINER_PREFIX:-eds}-matrix-element"
+    image: "${EDS_IMAGE_PREFIX:-eds}-matrix-element"
     build:
       context: "./matrix/element"
     volumes:
       - ./matrix/element/element-config.json:/app/config.json
     networks:
-      - eds_network
       - matrix_network
+      - "${EDS_CONTAINER_PREFIX:-eds}-network"
 
 networks:
   matrix_network:
