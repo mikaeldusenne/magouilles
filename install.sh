@@ -15,7 +15,7 @@ fi
 
 echo 'setting up...'
 
-EDS_NETWORK=${EDS_NETWORK:-eds_network}
+EDS_NETWORK="${EDS_CONTAINER_PREFIX:-eds}-network"
 docker network create $EDS_NETWORK || echo "network $EDS_NETWORK already exists."
 
 ./lib/create_certificates.sh --name keycloak --copy
@@ -52,6 +52,6 @@ sudo bash ./nginx/install.sh
 
 
 # set up realm and OIDC clients
-docker compose -f compose_keycloak.yml, compose_keycloak_realm_initialize.yml up --build --abort-on-container-exit
+docker compose -f compose_network.yml -f compose_keycloak.yml -f compose_keycloak_realm_initialize.yml up --build --abort-on-container-exit
 
 echo 'done.'
