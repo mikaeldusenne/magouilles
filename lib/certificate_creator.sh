@@ -32,7 +32,7 @@ while [[ $# > 0 ]];do
 done
 
 DEST=${DEST:-"./"}
-COMMON_NAME=${COMMON_NAME:-"eds-$NAME"}
+COMMON_NAME=${COMMON_NAME:-"$EDS_CONTAINER_PREFIX-$NAME"}
 
 [ -z "$COMMON_NAME" ] && error 'must specify a CommonName'
 [ -z "$NAME" ] && error 'must specify a name'
