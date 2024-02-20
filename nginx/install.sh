@@ -18,6 +18,6 @@ else
 fi
 
 EDS_CONTAINER_PREFIX=${EDS_CONTAINER_PREFIX:-eds}
-envsubst '$EDS_CONTAINER_PREFIX,$EDS_DOMAIN' < nginx_template.conf > nginx.conf
+envsubst '$EDS_CONTAINER_PREFIX,$EDS_DOMAIN' < nginx/nginx_template.conf > nginx/nginx.conf
 
 echo 'Done setting up nginx.'
