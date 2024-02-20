@@ -4,7 +4,13 @@ set -e
 
 a=(keycloak gitlab jupyterhub jupyterhub/jupyter matrix/matrix matrix/element vue)
 
-SHOULD_COPY="$2"
+while [[ $# > 0 ]];do
+	case "$1" in
+        --copy) SHOULD_COPY=1 ;;
+        --*) error "unsupported argument: $1";;
+	esac
+	shift
+done
 
 function run(){
     echo "installing SSL certificates for $1"
@@ -17,7 +23,7 @@ function run(){
     
     CRT_FILE=$(find "$1/certificates" -name '*crt*')
     
-    if [ "$SHOULD_COPY" = "1" ]; then
+    if [ -n "$SHOULD_COPY" ]; then
         for ee in $a; do
             if [ "$ee" != "$1" ]; then
                 if ! [ -d "$ee" ]; then
