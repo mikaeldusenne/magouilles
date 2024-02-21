@@ -1,8 +1,14 @@
 
 # Automatically create users
+#
+# Edit this file to your needs and place it in <ROOT>/keycloak/python_setup_data/
+#
 # Check the script keycloak/realm_setup.py
-#   to see Keycloak API usage and adapt to your needs
+# to see Keycloak API usage and adapt to your needs
+#
+# 
 - username: "someone"
+  enabled: true
   email: "someone@example.com"
   firstName: "Some"
   lastName: "One"
