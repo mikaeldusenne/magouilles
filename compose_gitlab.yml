@@ -54,8 +54,6 @@ services:
             }
           }
         ]
-    ports:
-      - "7680:443"
     networks:
       - eds_network
     
