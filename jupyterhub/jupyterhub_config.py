@@ -45,7 +45,7 @@ c.JupyterHub.admin_access = True # Allow admins to access notebooks owned by oth
 
 c.JupyterHub.log_level = 'INFO'
 
-c.Authenticator.whitelist = {"someone"}
+# c.Authenticator.whitelist = {}
 c.Authenticator.admin_users = {'mika'}
 
 
@@ -56,14 +56,14 @@ c.Authenticator.admin_users = {'mika'}
 
 # c.JupyterHub.hub_ip = public_ips()[-1]
 c.JupyterHub.hub_ip = "0.0.0.0"
-c.JupyterHub.hub_connect_ip = 'eds-jupyterhub'  # IP as seen on the docker network. Can also be a hostname.
+c.JupyterHub.hub_connect_ip = '${EDS_CONTAINER_PREFIX}-jupyterhub'  # IP as seen on the docker network. Can also be a hostname.
 # c.JupyterHub.hub_ip = ''
 
 c.JupyterHub.spawner_class = DockerSpawner
 c.DockerSpawner.image = f"{environ.get('EDS_IMAGE_PREFIX', 'eds')}-jupyter"
 c.Spawner.default_url = '/lab'
-c.DockerSpawner.network_name = 'eds_network'
-c.DockerSpawner.hub_connect_url = 'https://eds-jupyterhub'
+c.DockerSpawner.network_name = '${EDS_CONTAINER_PREFIX}-network'
+c.DockerSpawner.hub_connect_url = 'https://${EDS_CONTAINER_PREFIX}-jupyterhub'
 c.DockerSpawner.use_internal_ip = True
 c.DockerSpawner.http_timeout = 60
 c.DockerSpawner.start_timeout = 60

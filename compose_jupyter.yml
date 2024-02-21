@@ -16,14 +16,14 @@ services:
       OAUTH2_AUTHORIZE_URL: "https://keycloak.$EDS_DOMAIN/realms/royaume/protocol/openid-connect/auth"
       OAUTH2_REALM_URL:     "https://keycloak.$EDS_DOMAIN/realms/royaume"
       
-      OAUTH2_TOKEN_URL:     "https://eds-keycloak:8443/realms/royaume/protocol/openid-connect/token"
-      OAUTH2_USERDATA_URL:  "https://eds-keycloak:8443/realms/royaume/protocol/openid-connect/userinfo"
+      OAUTH2_TOKEN_URL:     "https://${EDS_CONTAINER_PREFIX}-keycloak:8443/realms/royaume/protocol/openid-connect/token"
+      OAUTH2_USERDATA_URL:  "https://${EDS_CONTAINER_PREFIX}-keycloak:8443/realms/royaume/protocol/openid-connect/userinfo"
       
       OAUTH2_CLIENT_ID: "jupyterhub"
       OAUTH2_CLIENT_SECRET: "$KEYCLOAK_JUPYTER_SECRET"
       OAUTH_CALLBACK_URL:   "https://jupyter.$EDS_DOMAIN/hub/oauth_callback"
       
-      JUPYTERHUB_API_URL: "https://eds-jupyterhub/hub/api"
+      JUPYTERHUB_API_URL: "https://${EDS_CONTAINER_PREFIX}-jupyterhub/hub/api"
     command: jupyterhub -f /srv/jupyterhub/jupyterhub_config.py
     networks:
       - eds_network
