@@ -1,110 +1,31 @@
 from pprint import pformat
 import os
 from os import environ
-import pickle
 import time
+import yaml
 
 import requests
 from requests.exceptions import ConnectionError
 
 
-
-def load_pickle(path):
-    print('loading pickle from {}'.format(path))
-    with open(path, 'rb') as f:
-        o = pickle.load(f)
-    return o
-
-def save_pickle(path, o):
-    print('saving pickle to {}'.format(path))
-    with open(path, 'wb') as f:
-        pickle.dump(o, f)
-
 # Keycloak server URL
 keycloak_url = f"http://{environ.get('EDS_CONTAINER_PREFIX', 'eds')}-keycloak:8080"
 client_id = 'admin-cli' # Default client for administration
-username = environ['KEYCLOAK_ADMIN'] # The Keycloak admin username
+username = environ.get('KEYCLOAK_ADMIN', 'admin') # The Keycloak admin username, defaults to 'admin'
 password = environ['KEYCLOAK_ADMIN_PASSWORD'] # The Keycloak admin password
-realm = 'master' # Master realm is used for authentication
+auth_realm = 'master' # Master realm is used for authentication
 
-def wait_for_availability():
-    wheel="|/-\\"
-    sleep_time=1
-    sleep_factor=1
-    k=0
-    status_code = None
-    while status_code is None:
-        try:
-            resp = requests.get(f"{keycloak_url}/realms/master")
-            status_code = resp.status_code
-        except ConnectionError as ex:
-            print(wheel[k % len(wheel)], end="\r")
-        time.sleep(sleep_time)
-        sleep_time *= sleep_factor
-    
-    assert status_code == 200, f"request HTTP error: {status_code}"
-    return status_code
+realm_name="royaume" # the realm to which the data will be inserted
 
-wait_for_availability()
-
-token_url = f'{keycloak_url}/realms/{realm}/protocol/openid-connect/token'
-
-response = requests.post(
-    token_url,
-    data={
-        'client_id': client_id,
-        'username': username,
-        'password': password,
-        'grant_type': 'password'
-    },
-    headers={'Content-Type': 'application/x-www-form-urlencoded'}
-)
-
-response_data = response.json()
-access_token = response_data['access_token']
-
-print("obtained access token.")
-
-################
-
-realm_name="royaume"
 
 endpoints = dict(
-    realm=f'{keycloak_url}/admin/realms',
-    client=f'{keycloak_url}/admin/realms/{realm_name}/clients',
+    realm=f'admin/realms',
+    token=f'realms/{auth_realm}/protocol/openid-connect/token',
+    client=f'admin/realms/{realm_name}/clients',
+    user=f'admin/realms/{realm_name}/users',
 )
 
-# Authorization header with the access token
-auth_headers = {
-    'Authorization': f'Bearer {access_token}',
-    'Content-Type': 'application/json'
-}
-
-
-def request_keycloak(endpoint_name, data, description=""):
-    resp = requests.post(endpoints[endpoint_name], json=data, headers=auth_headers)
-    if resp.status_code == 201:
-        print(f"{endpoint_name} {description} : success")
-    elif resp.status_code == 409:
-        print(f"{endpoint_name} {description} : already exists.")
-    else:
-        save_pickle("./data/response.pkl", resp)
-        raise Exception(f"""
-{endpoint_name} : Failed. Status code: {resp.status_code}
-
---------
-{pformat(data)}
---------
-""")
-
-
-request_keycloak("realm", {
-    'id': realm_name,
-    'realm': realm_name,
-    'enabled': True,
-    'displayName': 'Royaume'
-})
-
+# list of clients to create, with their configuration
 clients = [
     {
         'clientId': 'jupyterhub',
@@ -141,9 +62,111 @@ clients = [
     },
 ]
 
-for client in clients:
-    request_keycloak(
-        "client",
-        client,
-        f"{client['clientId']}"
-    )
+
+def wait_for_availability():
+    """
+    Try to send a request to the keycloak server and returns when an answer was received.
+    The endpoint should never give an error, so if it does, this function throws an exception
+    sleep_factor controls the growth of the sleeping time between two unsuccessul attempts.
+    """
+    wheel="|/-\\"
+    sleep_time=1
+    sleep_factor=1
+    k=0
+    status_code = None
+    while status_code is None:
+        try:
+            resp = requests.get(f"{keycloak_url}/realms/master")
+            status_code = resp.status_code
+        except ConnectionError as ex:
+            print("Waiting for the keycloak server to start... " + wheel[k % len(wheel)], end="\r")
+        time.sleep(sleep_time)
+        sleep_time *= sleep_factor
+        k+=1
+    
+    assert status_code == 200, f"request HTTP error: {status_code}"
+    return status_code
+
+
+def request_keycloak(endpoint_name, data, description="", headers=None):
+    headers = headers or {}
+    args = dict(headers=headers)
+    
+    datakey = "data" if 'urlencoded' in headers.get('Content-Type', '') else "json"
+    args[datakey] = data
+    
+    resp = requests.post(f"""{keycloak_url}/{endpoints[endpoint_name]}""", **args)
+    
+    if (resp.status_code >= 200) and (resp.status_code < 400):
+        print(f"{endpoint_name} {description} : success")
+    elif resp.status_code == 409:
+        # We don't want to fail if the failure reason is HTTP 409 == element already exists
+        # we do not want to overwrite data either so we simply write that the element was already there
+        print(f"{endpoint_name} {description} : already exists.")
+    else:
+        raise Exception(f"""
+{endpoint_name} : Failed. Status code: {resp.status_code}
+{pformat(resp.text)}
+--------
+{pformat(headers)}
+--------
+{pformat(data)}
+--------
+""")
+    return resp
+
+
+if __name__ == "__main__":
+    
+    wait_for_availability()
+    
+    access_token = request_keycloak(
+        'token',
+        data={
+            'client_id': client_id,
+            'username': username,
+            'password': password,
+            'grant_type': 'password'
+        },
+        headers={'Content-Type': 'application/x-www-form-urlencoded'}
+    ).json()['access_token']
+
+    print("obtained access token.")
+    # Authorization header with the access token
+    auth_headers = {
+        'Authorization': f'Bearer {access_token}',
+        'Content-Type': 'application/json'
+    }
+    
+    # create realm
+    request_keycloak("realm", {
+        'id': realm_name,
+        'realm': realm_name,
+        'enabled': True,
+        'displayName': 'Royaume'
+    }, headers=auth_headers)
+
+    # create one client for each service
+    for client in clients:
+        request_keycloak(
+            endpoint_name="client",
+            data=client,
+            description=f"{client['clientId']}",
+            headers=auth_headers
+        )
+    
+    # create users if a user file is present
+    if os.path.exists("./data/users.yml"):
+        with open('data/users.yml', 'r') as file:
+            user_data = yaml.safe_load(file)
+        for user in user_data:
+            request_keycloak(
+                "user",
+                user,
+                f"create user <{user['username']}>",
+                headers=auth_headers
+            )
+
+
+
+

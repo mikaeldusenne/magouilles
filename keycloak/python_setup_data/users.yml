@@ -1,0 +1,13 @@
+
+# Automatically create users
+# Check the script keycloak/realm_setup.py
+#   to see Keycloak API usage and adapt to your needs
+- username: "someone"
+  email: "someone@example.com"
+  firstName: "Some"
+  lastName: "One"
+  emailVerified: true # true to disable the need for a user to verify it's email address
+  credentials: 
+    - type: "password"
+      value: "REPLACE WITH PASSWORD"
+      temporary: false
