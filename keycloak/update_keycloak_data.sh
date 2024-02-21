@@ -2,6 +2,8 @@
 
 set -eu
 
+source .env
+
 # This should be ran on a running environment
 
 # # optional build command
