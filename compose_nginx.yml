@@ -4,11 +4,11 @@ services:
   nginx:
     image: nginx:alpine
     container_name: "${EDS_CONTAINER_PREFIX:-eds}-nginx"
-    depends_on:
-      - keycloak
-      - matrix
-      - jupyterhub
-      - gitlab
+    # depends_on:
+      # - keycloak
+      # - matrix
+      # - jupyterhub
+      # - gitlab
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./nginx/certificates/privkey.pem:/etc/ssl/private/nginx.key:ro
