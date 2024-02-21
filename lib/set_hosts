@@ -12,7 +12,7 @@ function get_ipaddr(){
 
 IPADDR=$(get_ipaddr "${EDS_CONTAINER_PREFIX}-nginx")
 echo "address for nginx: $IPADDR"
-remove_hosts
+./lib/remove_hosts
 
 echo -e '\n#### Development' >> /etc/hosts
 
@@ -23,6 +23,7 @@ $IPADDR keycloak.$EDS_DOMAIN
 $IPADDR gitlab.$EDS_DOMAIN
 $IPADDR jupyter.$EDS_DOMAIN
 $IPADDR chat.$EDS_DOMAIN
+$IPADDR matrix.$EDS_DOMAIN
 EOF
 # fi
 
