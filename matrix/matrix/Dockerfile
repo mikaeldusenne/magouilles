@@ -1,5 +1,10 @@
 FROM matrixdotorg/synapse:latest
 
+RUN mkdir -p /my-ssl-certs/
+COPY certificates/matrix.crt /my-ssl-certs/
+COPY certificates/matrix.key /my-ssl-certs/
+RUN chown -R 991:991 /my-ssl-certs/
+
 COPY trusted-certs/keycloak.crt /usr/local/share/ca-certificates/keycloak.crt
 RUN update-ca-certificates
 

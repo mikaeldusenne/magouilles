@@ -1,3 +1,5 @@
+# [[This template file will be copied to the data/ folder when running install.sh]]
+# 
 # Configuration file for Synapse.
 #
 # This is a YAML file: see [1] for a quick introduction. Note in particular
@@ -13,13 +15,16 @@ server_name: "$EDS_CONTAINER_PREFIX-matrix"
 pid_file: /data/homeserver.pid
 public_baseurl: https://matrix.$EDS_DOMAIN
 listeners:
-  - port: 8008
-    tls: false
+  - port: 8448
+    tls: true
     type: http
     x_forwarded: true
     resources:
       - names: [client, federation]
         compress: false
+        
+tls_certificate_path: "/my-ssl-certs/matrix.crt"
+tls_private_key_path: "/my-ssl-certs/matrix.key"
         
 # database:
 #   name: sqlite3
