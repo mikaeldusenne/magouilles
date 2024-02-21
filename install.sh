@@ -15,8 +15,6 @@ fi
 
 echo 'setting up...'
 
-EDS_NETWORK="${EDS_CONTAINER_PREFIX:-eds}-network"
-docker network create $EDS_NETWORK || echo "network $EDS_NETWORK already exists."
 
 ./lib/create_certificates.sh --name keycloak --copy
 ./lib/create_certificates.sh --name jupyterhub --copy
@@ -52,7 +50,10 @@ bash ./matrix/install.sh
 sudo bash ./nginx/install.sh
 
 
+# docker compose -f compose_network.yml -f compose_keycloak.yml -f compose_keycloak_realm_initialize.yml up --build --abort-on-container-exit
+
 # set up realm and OIDC clients
-docker compose -f compose_network.yml -f compose_keycloak.yml -f compose_keycloak_realm_initialize.yml up --build --abort-on-container-exit
+./start.sh network keycloak keycloak_realm_initialize
+
 
 echo 'done.'
