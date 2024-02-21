@@ -1,0 +1,22 @@
+#!/bin/bash
+
+set -eu
+
+source .env
+
+if [ -n "$2" ]; then
+   cmd=bash
+   arg=""
+else
+   cmd=sleep
+   arg=600
+fi
+
+volumepath=$(mktemp -d -t edsidle_XXXX)
+echo "$volumepath <-> /mnt"
+
+
+echo "docker run -v volumepath:/mnt --rm --name "${EDS_CONTAINER_PREFIX:-eds}-$1" -it --entrypoint $cmd "${EDS_IMAGE_PREFIX:-eds}-$1" $arg"
+
+
+docker run  $(pwd)/ -v $volumepath:/mnt --rm --name "${EDS_CONTAINER_PREFIX:-eds}-$1" -it --entrypoint $cmd "${EDS_IMAGE_PREFIX:-eds}-$1" $arg

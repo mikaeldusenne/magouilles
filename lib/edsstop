@@ -1,0 +1,5 @@
+#!/bin/bash
+
+source .env
+
+docker stop "${EDS_CONTAINER_PREFIX:-eds}-$1"

@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -eu
+
+source .env
+
+EDS_NETWORK="${EDS_CONTAINER_PREFIX:-eds}-network"
+
+echo "recreating docker network $EDS_NETWORK..."
+
+docker network rm $EDS_NETWORK \
+    || echo "network $EDS_NETWORK did not exist." \
+        && docker network create $EDS_NETWORK
