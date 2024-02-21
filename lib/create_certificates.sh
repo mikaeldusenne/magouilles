@@ -29,7 +29,7 @@ function run(){
     mkdir -p "$1/certificates"
     
     ./lib/certificate_creator.sh \
-        --name "$1" \
+        --name $(basename "$1") \
         --san "$SAN" \
         --dest $(realpath "$1/certificates") \
         --p12
