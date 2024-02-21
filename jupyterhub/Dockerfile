@@ -9,8 +9,8 @@ RUN mkdir -p /my-certificates/
 COPY certificates/jupyterhub.crt /my-certificates/
 COPY certificates/jupyterhub.key /my-certificates/
 
-COPY keycloak.crt /usr/local/share/ca-certificates/
-COPY gitlab.crt /my-certificates/gitlab.crt
+COPY trusted-certs/keycloak.crt /usr/local/share/ca-certificates/
+COPY trusted-certs/gitlab.crt /my-certificates/gitlab.crt
 
 RUN dpkg-reconfigure ca-certificates && \
     update-ca-certificates --fresh

@@ -67,4 +67,3 @@ if [ "$P12" = "1" ]; then
 fi
 
 
-# openssl x509 -in $DEST/$NAME.crt -text -noout

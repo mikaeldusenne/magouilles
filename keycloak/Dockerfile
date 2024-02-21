@@ -13,10 +13,10 @@ USER root
 
 RUN keytool -importkeystore -deststorepass password -destkeystore conf/server.keystore -srckeystore /etc/x509/https/server.p12 -srcstoretype PKCS12 -srcstorepass changeit -alias server
 
-COPY gitlab.crt /etc/x509/https/
+COPY trusted-certs/gitlab.crt /etc/x509/https/
 RUN keytool -import -trustcacerts -alias gitlab -file /etc/x509/https/gitlab.crt -keystore conf/server.keystore -storepass password -noprompt
 
-COPY jupyterhub.crt /etc/x509/https/
+COPY trusted-certs/jupyterhub.crt /etc/x509/https/
 RUN keytool -import -trustcacerts -alias jupyterhub -file /etc/x509/https/jupyterhub.crt -keystore conf/server.keystore -storepass password -noprompt
 
 USER keycloak

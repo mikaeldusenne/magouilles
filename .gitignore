@@ -13,3 +13,4 @@ volume
 matrix/matrix/data
 nginx/nginx.conf
 element-config.json
+trusted-certs

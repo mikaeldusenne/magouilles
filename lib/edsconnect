@@ -1,0 +1,15 @@
+#!/bin/bash
+
+
+CONTAINER="$1"
+
+shift
+
+if [ -z "$1" ]; then
+    args="bash"
+else
+    args=$@
+fi
+    
+
+docker exec -it "${EDS_CONTAINER_PREFIX:-eds}-$CONTAINER" $args

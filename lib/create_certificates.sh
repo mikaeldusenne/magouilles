@@ -18,7 +18,7 @@ while [[ $# > 0 ]];do
         --name) NAME=$2; shift ;;
         --san) SAN=$2; shift ;;
         --copy) SHOULD_COPY=1 ;;
-        *) error "dffunsupported argument: $1";;
+        *) error "unsupported argument: $1";;
 	esac
 	shift
 done
@@ -38,13 +38,14 @@ function run(){
     
     if [ "$SHOULD_COPY" = "1" ]; then
         for ee in $COPY_DEST; do
+            mkdir -p "$ee/trusted-certs/"
             if [ "$ee" != "$1" ]; then
                 if ! [ -d "$ee" ]; then
                     echo "creating $ee"
                     mkdir -p "$ee"
                 fi
                 echo "copy $CRT_FILE to $ee"
-                cp "$CRT_FILE" "$ee/"
+                cp "$CRT_FILE" "$ee/trusted-certs/"
             fi
         done
     fi
