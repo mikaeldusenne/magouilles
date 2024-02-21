@@ -21,6 +21,7 @@ docker network create $EDS_NETWORK || echo "network $EDS_NETWORK already exists.
 ./lib/create_certificates.sh --name keycloak --copy
 ./lib/create_certificates.sh --name jupyterhub --copy
 ./lib/create_certificates.sh --name gitlab --copy
+./lib/create_certificates.sh --name matrix/matrix --copy
 
 function create_env(){
     echo "creating secret key for '$1'"
