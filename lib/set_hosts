@@ -12,9 +12,19 @@ function get_ipaddr(){
 
 IPADDR=$(get_ipaddr "${EDS_CONTAINER_PREFIX}-nginx")
 echo "address for nginx: $IPADDR"
+
+function ip_error(){
+    echo $(docker inspect "${EDS_CONTAINER_PREFIX}-nginx" | jq -r ".[0].NetworkSettings.Networks")
+    
+    echo "no ip address found"
+    exit 1
+}
+
+[ -z $IPADDR ] && ip_error
+
 ./lib/remove_hosts
 
-echo -e '\n#### Development' >> /etc/hosts
+echo -e '#### Development' >> /etc/hosts
 
 # if ! grep -q 'Development' /etc/hosts; then
 cat <<EOF >> /etc/hosts
