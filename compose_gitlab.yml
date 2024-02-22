@@ -31,10 +31,12 @@ services:
         gitlab_rails['omniauth_allow_single_sign_on'] = ['openid_connect']
         gitlab_rails['omniauth_sync_email_from_provider'] = 'openid_connect'
         gitlab_rails['omniauth_sync_profile_from_provider'] = ['openid_connect']
-        gitlab_rails['omniauth_sync_profile_attributes'] = ['email']
+        gitlab_rails['omniauth_sync_profile_attributes'] = ['name', 'email']
         gitlab_rails['omniauth_block_auto_created_users'] = false
         gitlab_rails['omniauth_auto_link_ldap_user'] = false
-        
+        gitlab_rails['omniauth_auto_sign_in_with_provider'] = 'openid_connect'
+        gitlab_rails['omniauth_allow_bypass_two_factor'] = ['twitter', 'google_oauth2']
+        gitlab_rails['omniauth_auto_sign_in_with_provider'] = 'openid_connect'
         # gitlab_rails['gitlab_signup_enabled'] = false
         gitlab_rails['gitlab_email_enabled'] = false
         
@@ -50,6 +52,7 @@ services:
               "discovery" => false,
               "client_auth_method" => "query",
               "uid_field" => "preferred_username",
+              "logout_url" => "/cas/logout",
               "client_options" => {
                 "identifier" => "gitlab",
                 "secret" => "$KEYCLOAK_GITLAB_SECRET",
