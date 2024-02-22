@@ -4,7 +4,7 @@ set -e
 set -u
 
 echo 'setting up jupyterhub...'
-source .env
+source ./.env
 
 # prepare jupyterhub docker spawning instances
 (cd jupyterhub/jupyter && docker build . -t "${EDS_IMAGE_PREFIX:-eds}-jupyter")
