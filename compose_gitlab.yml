@@ -42,14 +42,20 @@ services:
               "name" => "openid_connect",
               "scope" => ["openid", "profile"],
               "response_type" => "code",
-              "issuer" => "https://${EDS_CONTAINER_PREFIX:-eds}-keycloak:8443/realms/royaume",
-              "discovery" => true,
+              "issuer" => "https://keycloak.$EDS_DOMAIN/realms/royaume",
+              "discovery" => false,
               "client_auth_method" => "query",
               "uid_field" => "preferred_username",
               "client_options" => {
                 "identifier" => "gitlab",
                 "secret" => "$KEYCLOAK_GITLAB_SECRET",
                 "redirect_uri" => "https://gitlab.$EDS_DOMAIN/users/auth/openid_connect/callback",
+                
+                "authorization_endpoint" => "https://keycloak.localhost.mika/realms/royaume/protocol/openid-connect/auth",
+                "token_endpoint" => "https://eds-dev-keycloak:8443/realms/royaume/protocol/openid-connect/token",
+                "userinfo_endpoint" => "https://eds-dev-keycloak:8443/realms/royaume/protocol/openid-connect/userinfo",
+                "jwks_uri" => "https://eds-dev-keycloak:8443/realms/royaume/protocol/openid-connect/certs",
+
               }
             }
           }
@@ -57,3 +63,4 @@ services:
     networks:
       - eds_network
     
+# "issuer" => "https://${EDS_CONTAINER_PREFIX:-eds}-keycloak:8443/realms/royaume",

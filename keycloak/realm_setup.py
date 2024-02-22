@@ -56,7 +56,7 @@ clients = [
         'enabled': True,
         'protocol': 'openid-connect',
         'publicClient': False,
-        'redirectUris': [f'https://jupyter.{environ["EDS_DOMAIN"]}/users/auth/openid_connect/callback'],
+        'redirectUris': [f'https://gitlab.{environ["EDS_DOMAIN"]}/users/auth/openid_connect/callback'],
         'clientAuthenticatorType': 'client-secret',
         'secret': environ["KEYCLOAK_GITLAB_SECRET"]
     },
