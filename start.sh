@@ -32,5 +32,10 @@ echo $action | grep -q "\bup\b" && (sleep 10 && sudo ./lib/set_hosts) &
 echo "docker compose $yamls $action"
 docker compose $yamls $action
 
-echo $action | grep -q "\bup\b" && docker compose $yamls down
+function down(){
+    docker compose $yamls down
+    docker ps -a --format "{{.Names}}" | grep "^$EDS_CONTAINER_PREFIX-jupyter-" | xargs -r docker rm
+}
+
+echo $action | grep -q "\bup\b" && down
 
