@@ -16,7 +16,6 @@ c.JupyterHub.ssl_key = '/my-certificates/jupyterhub.key'
 
 c.JupyterHub.port = 443
 
-
 c.JupyterHub.authenticator_class = GenericOAuthenticator
 
 c.GenericOAuthenticator.client_id = environ['OAUTH2_CLIENT_ID']
@@ -29,15 +28,11 @@ c.GenericOAuthenticator.scope = ['openid', 'profile', 'email']
 c.GenericOAuthenticator.oauth_callback_url = environ['OAUTH_CALLBACK_URL']
 
 # c.GenericOAuthenticator.userdata_method = 'GET'
-# c.GenericOAuthenticator.userdata_params = {'state': 'state'}
-# Map the "preferred_username" claim to the JupyterHub username
 c.GenericOAuthenticator.username_key = "preferred_username"
-
 c.GenericOAuthenticator.login_service = 'local keycloak'
 c.GenericOAuthenticator.userdata_params = {"state": "state"}
 c.GenericOAuthenticator.auto_login = False
 c.GenericOAuthenticator.scope = ['openid', 'email', 'profile']
-# c.GenericOAuthenticator.username_key = "mikkaa"
 c.Authenticator.auto_login = False
 c.GenericOAuthenticator.client_id = 'jupyterhub'
 
@@ -56,18 +51,38 @@ c.Authenticator.admin_users = {'mika'}
 
 # c.JupyterHub.hub_ip = public_ips()[-1]
 c.JupyterHub.hub_ip = "0.0.0.0"
-c.JupyterHub.hub_connect_ip = '${EDS_CONTAINER_PREFIX}-jupyterhub'  # IP as seen on the docker network. Can also be a hostname.
+c.JupyterHub.hub_connect_ip = '$EDS_CONTAINER_PREFIX-jupyterhub'  # IP as seen on the docker network. Can also be a hostname.
 # c.JupyterHub.hub_ip = ''
 
+# class CustomDockerSpawner(DockerSpawner):
+#     @property
+#     def container_name(self):
+        
+#     def _container_name_default(self):
+#         username = self.escaped_name
+#         return f"$EDS_CONTAINER_PREFIX-jupyter-{username}"
+# c.JupyterHub.spawner_class = CustomDockerSpawner
+
 c.JupyterHub.spawner_class = DockerSpawner
+c.DockerSpawner.prefix = '$EDS_CONTAINER_PREFIX-jupyter'
+
 c.DockerSpawner.image = f"{environ.get('EDS_IMAGE_PREFIX', 'eds')}-jupyter"
 c.Spawner.default_url = '/lab'
-c.DockerSpawner.network_name = '${EDS_CONTAINER_PREFIX}-network'
-c.DockerSpawner.hub_connect_url = 'https://${EDS_CONTAINER_PREFIX}-jupyterhub'
+c.DockerSpawner.network_name = '$EDS_CONTAINER_PREFIX-network'
+c.DockerSpawner.hub_connect_url = 'https://$EDS_CONTAINER_PREFIX-jupyterhub'
 c.DockerSpawner.use_internal_ip = True
+c.Spawner.remove = True
 c.DockerSpawner.http_timeout = 60
 c.DockerSpawner.start_timeout = 60
 
+
+
+# def userdata_hook(spawner, auth_state):
+#     spawner.userdata = auth_state["userdata"]
+
+# c.Spawner.auth_state_hook = userdata_hook
+
+# c.DockerSpawner.allowed_images = {"a", "b"}
 
 notebook_dir = os.environ.get('DOCKER_NOTEBOOK_DIR', '/home/jovyan/my_amazing_research_stuff')
 # basename_host_notebook = "./jupyterhub/jupyter/notebook_volumes"
@@ -1536,7 +1551,7 @@ c.DockerSpawner.volumes = { 'jupyterhub-user-{username}': notebook_dir }
 #  
 #          New in JupyterHub 0.8
 #  Default: False
-# c.Authenticator.enable_auth_state = False
+# c.Authenticator.enable_auth_state = True
 
 ## Let authenticator manage user groups
 #  
@@ -1546,7 +1561,7 @@ c.DockerSpawner.volumes = { 'jupyterhub-user-{username}': notebook_dir }
 #  
 #          All group-assignment APIs are disabled if this is True.
 #  Default: False
-# c.Authenticator.manage_groups = False
+c.Authenticator.manage_groups = True
 
 ## An optional hook function that you can implement to do some bootstrapping work
 #  during authentication. For example, loading user account details from an
