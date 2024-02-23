@@ -10,13 +10,16 @@
 yamls=''
 action='up --abort-on-container-exit --build'
 
+addyaml(){
+    [ -f "compose_${1}.yml" ] && echo " -f compose_${1}.yml" || echo " -f $1.yml"
+}
+
 while [[ $# > 0 ]];do
 	case "$1" in
         --action)
-            
             action=$2;
             shift ;;
-        *) yamls="$yamls -f compose_${1}.yml" ;;
+        *) yamls="$yamls $(addyaml $1)" ;;
 	esac
 	shift
 done
