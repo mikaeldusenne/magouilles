@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-set -eu
+set -eux
 
 source .env
 
@@ -17,8 +17,8 @@ if ! [ -e "jitsi-meet-cfg" ]; then
     cd jitsi-docker
     
     # cp -i env.example .env
-    cp -i ../.env.template ./.env
-    cp -i ../docker-compose.yml ./
+    cp ../.env.template ./.env
+    cp ../docker-compose.yml ./
     
     ./gen-passwords.sh
     
