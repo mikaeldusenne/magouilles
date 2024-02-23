@@ -23,6 +23,11 @@ services:
       GITLAB_LOG_LEVEL: WARN
       GITLAB_OMNIBUS_CONFIG: |
         external_url "https://gitlab.$EDS_DOMAIN"
+        sidekiq['log_level'] = "WARN"
+        # sidekiq['metrics_enabled'] = false
+        # sidekiq['health_checks_enabled'] = false
+        prometheus['enable'] = false
+        
         nginx['listen_https'] = true
         nginx['listen_port'] = 443
         nginx['ssl_certificate'] = "/etc/gitlab/ssl/gitlab.crt"
