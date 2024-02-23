@@ -37,7 +37,10 @@ clients = [
         'redirectUris': [f'https://jupyter.{environ["EDS_DOMAIN"]}/hub/oauth_callback'],
         'clientAuthenticatorType': 'client-secret',
         'secret': environ["KEYCLOAK_JUPYTER_SECRET"],
-        "postLogoutRedirectUris": [f'https://jupyter.{environ["EDS_DOMAIN"]}/'],
+        # "postLogoutRedirectUris": [f'https://jupyter.{environ["EDS_DOMAIN"]}/'],
+        "attributes": {
+            "post.logout.redirect.uris": "+",
+        },
     },
     {
         'clientId': 'matrix',
@@ -49,7 +52,10 @@ clients = [
         'redirectUris': [f'https://matrix.{environ["EDS_DOMAIN"]}/_synapse/client/oidc/callback'],
         'clientAuthenticatorType': 'client-secret',
         'secret': environ["KEYCLOAK_MATRIX_SECRET"],
-        "postLogoutRedirectUris": [f'https://chat.{environ["EDS_DOMAIN"]}/'],
+        "attributes": {
+            "post.logout.redirect.uris": "+",
+        },
+
     },
     {
         'clientId': 'gitlab',
@@ -61,7 +67,10 @@ clients = [
         'redirectUris': [f'https://gitlab.{environ["EDS_DOMAIN"]}/users/auth/openid_connect/callback'],
         'clientAuthenticatorType': 'client-secret',
         'secret': environ["KEYCLOAK_GITLAB_SECRET"],
-        "postLogoutRedirectUris": [f'https://gitlab.{environ["EDS_DOMAIN"]}/'],
+        "attributes": {
+            "post.logout.redirect.uris": "+",
+        },
+
     },
 ]
 
