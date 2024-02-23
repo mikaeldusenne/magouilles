@@ -15,3 +15,4 @@ nginx/nginx.conf
 element-config.json
 trusted-certs
 python_setup_data
+gitlab/gitlab.rb
