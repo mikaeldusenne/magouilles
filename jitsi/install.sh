@@ -32,7 +32,7 @@ cd ../
 # envsubst < jitsi/.env.template > jitsi/jitsi-docker/.env
 
 # delete previous
-sed -i '/#### Jisty/,/#### END_Jitsy/d' /etc/hosts
+sed -i '/#### Jisty/,/#### END_Jitsy/d' .env
 
 # append new
 echo '#### Jisty' >> .env
