@@ -30,7 +30,7 @@ fi
 
 
 echo $action | grep -q "\bup\b" && ./lib/eds_recreate_network
-if [ -n "EDS_DEV_MODE" ]; then
+if [ -n "$EDS_DEV_MODE" ]; then
     echo $action | grep -q "\bup\b" && (sleep 10 && sudo ./lib/set_hosts) &
 fi
 
