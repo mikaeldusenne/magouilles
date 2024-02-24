@@ -30,7 +30,9 @@ fi
 
 
 echo $action | grep -q "\bup\b" && ./lib/eds_recreate_network
-echo $action | grep -q "\bup\b" && (sleep 10 && sudo ./lib/set_hosts) &
+if [ -n "EDS_DEV_MODE" ]; then
+    echo $action | grep -q "\bup\b" && (sleep 10 && sudo ./lib/set_hosts) &
+fi
 
 echo "docker compose $yamls $action"
 docker compose $yamls $action
