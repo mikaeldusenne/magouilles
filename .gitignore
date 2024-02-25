@@ -16,3 +16,5 @@ element-config.json
 trusted-certs
 python_setup_data
 gitlab/gitlab.rb
+centos/data
+jitsi/jitsi-docker/
