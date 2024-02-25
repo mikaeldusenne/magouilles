@@ -52,8 +52,9 @@ services:
       # - --db-username=keycloak
       - --db-password=$KEYCLOAK_POSTGRES_PASSWORD
     networks:
-      - eds_network
-      - keycloak_network
+      eds_network:
+      keycloak_network:
+        priority: 88
 
 networks:
   keycloak_network:
