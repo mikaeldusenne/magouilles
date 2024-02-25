@@ -24,6 +24,8 @@ if ! [ -e "jitsi-meet-cfg" ]; then
     
     mkdir -p ./jitsi-meet-cfg/{web,transcripts,prosody/config,prosody/prosody-plugins-custom,jicofo,jvb,jigasi,jibri}
 
+    git clone https://github.com/nordeck/jitsi-keycloak-adapter
+    
     cd ../
 fi
 
@@ -36,8 +38,10 @@ sed -i '/#### Jisty/,/#### END_Jitsy/d' .env
 
 # append new
 echo '#### Jisty' >> .env
-envsubst < jitsi/jitsy-docker/.env >> .env
+envsubst < jitsi/jitsi-docker/.env >> .env
 echo '#### END_Jitsy' >> .env
 
 
-
+# # web/config.js
+# config.prejoinConfig = {enabled: false, hideDisplayName: true};
+# config.disableDeepLinking=true
