@@ -7,7 +7,7 @@ source .env
 cp /etc/hosts /etc/hosts.backup
 
 function get_ipaddr(){
-    echo $(docker inspect "$1" | jq -r ".[0].NetworkSettings.Networks.[\"${EDS_CONTAINER_PREFIX}-network\"].IPAddress" | sed '/null/d')
+    echo $(docker inspect "$1" | jq -r ".[0].NetworkSettings.Networks.[\"${EDS_CONTAINER_PREFIX}-network-outside-world\"].IPAddress" | sed '/null/d')
 }
 
 IPADDR=$(get_ipaddr "${EDS_CONTAINER_PREFIX}-nginx")
@@ -44,6 +44,10 @@ function add(){
         echo "--------"
         echo "adding: $ipaddr $1"
         echo "$ipaddr $1" | tee -a /etc/hosts
+    else
+        echo "no ip addr found for $1"
+        # echo "docker inspect "$1" | jq -r ".[0].NetworkSettings.Networks.[\"${EDS_CONTAINER_PREFIX}-network\"].IPAddress" | sed '/null/d'"
+        echo $(docker inspect "$1" | jq -r ".[0].NetworkSettings.Networks")
     fi
 }
 

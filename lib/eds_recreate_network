@@ -11,4 +11,4 @@ echo "recreating docker network $EDS_NETWORK..."
 docker network rm $EDS_NETWORK \
     || echo "network $EDS_NETWORK did not exist." \
 
-docker network create $EDS_NETWORK
+docker network create --internal $EDS_NETWORK
