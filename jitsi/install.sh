@@ -24,7 +24,11 @@ if ! [ -e "jitsi-meet-cfg" ]; then
     
     mkdir -p ./jitsi-meet-cfg/{web,transcripts,prosody/config,prosody/prosody-plugins-custom,jicofo,jvb,jigasi,jibri}
 
-    git clone https://github.com/nordeck/jitsi-keycloak-adapter
+    # git clone https://github.com/nordeck/jitsi-keycloak-adapter
+    git clone git@github.com:mikaeldusenne/jitsi-keycloak-adapter.git
+    cd jitsi-keycloak-adapter
+    git checkout origin/authenticate-from-private-network
+    cd ../
     
     cd ../
 fi
