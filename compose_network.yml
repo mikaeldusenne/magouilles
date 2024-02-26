@@ -3,6 +3,12 @@ version: '3.8'
 networks:
   eds_outside_world:
     name: "${EDS_CONTAINER_PREFIX:-eds}-network-outside-world"
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.202.0/24
+          gateway: 172.16.202.1
   eds_network:
     name: "${EDS_CONTAINER_PREFIX:-eds}-network"
     external: true

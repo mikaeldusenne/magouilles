@@ -7,8 +7,10 @@ services:
     volumes:
       - ./centos/data/:/root/
     networks:
-      - eds_network
-      - eds_outside_world
+      eds_network:
+      eds_outside_world:
+        ipv4_address: 172.16.202.2
+
     command: sleep 9999
 
 
