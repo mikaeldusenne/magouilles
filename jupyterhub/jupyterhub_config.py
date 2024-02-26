@@ -43,8 +43,10 @@ c.JupyterHub.log_level = 'INFO'
 
 # c.Authenticator.whitelist = {}
 c.Authenticator.admin_users = {'mika'}
-
-
+c.GenericOAuthenticator.admin_groups = ['admin']
+c.GenericOAuthenticator.allow_all = True # allow all authenticated users to log in
+# c.GenericOAuthenticator.allowed_groups = {'jupyter'} # todo claim_groups_key and userdata_url
+# c.GenericOAuthenticator.claim_groups_key =
 # https://github.com/jupyterhub/dockerspawner/blob/2e89ca0c5d89dbedf2c42aad06a32c2daf0376fb/examples/oauth/jupyterhub_config.py
 
 # print("====================>>>>>>", public_ips())
