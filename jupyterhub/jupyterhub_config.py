@@ -31,10 +31,11 @@ c.GenericOAuthenticator.oauth_callback_url = environ['OAUTH_CALLBACK_URL']
 c.GenericOAuthenticator.username_key = "preferred_username"
 c.GenericOAuthenticator.login_service = 'local keycloak'
 c.GenericOAuthenticator.userdata_params = {"state": "state"}
-c.GenericOAuthenticator.auto_login = False
+c.GenericOAuthenticator.auto_login = True
 c.GenericOAuthenticator.scope = ['openid', 'email', 'profile']
-c.Authenticator.auto_login = False
+# c.Authenticator.auto_login = False
 c.GenericOAuthenticator.client_id = 'jupyterhub'
+
 
 c.JupyterHub.admin_access = True # Allow admins to access notebooks owned by other users
 
