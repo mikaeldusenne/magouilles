@@ -29,7 +29,11 @@ if [ -z "$yamls" ]; then
 fi
 
 
-echo $action | grep -q "\bup\b" && ./lib/eds_recreate_network
+echo $action | grep -q "\bup\b" && ( \
+  ./lib/eds_recreate_network; \
+  ./website/frontend/run.sh build \
+)
+
 if [ -n "$EDS_DEV_MODE" ]; then
     echo $action | grep -q "\bup\b" && (sleep 10 && sudo ./lib/set_hosts) &
 fi
