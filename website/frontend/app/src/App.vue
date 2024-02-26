@@ -38,7 +38,7 @@ const services = ref([
   {
     name: 'Jitsi',
     description: 'Conférences vidéo sécurisées et open source.',
-    link: 'jitsi',
+    link: 'meet',
   },
   {
     name: 'Seafile',
