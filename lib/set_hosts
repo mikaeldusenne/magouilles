@@ -41,13 +41,13 @@ EOF
 function add(){
     ipaddr=$(get_ipaddr "$1")
     if [ -n "$ipaddr" ]; then
-        echo "--------"
-        echo "adding: $ipaddr $1"
+        # echo "--------"
+        # echo "adding: $ipaddr $1"
         echo "$ipaddr $1" | tee -a /etc/hosts
     else
         echo "no ip addr found for $1"
         # echo "docker inspect "$1" | jq -r ".[0].NetworkSettings.Networks.[\"${EDS_CONTAINER_PREFIX}-network\"].IPAddress" | sed '/null/d'"
-        echo $(docker inspect "$1" | jq -r ".[0].NetworkSettings.Networks")
+        # echo $(docker inspect "$1" | jq -r ".[0].NetworkSettings.Networks")
     fi
 }
 
