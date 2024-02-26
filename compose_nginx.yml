@@ -8,6 +8,7 @@ services:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./nginx/certificates/privkey.pem:/etc/ssl/private/nginx.key:ro
       - ./nginx/certificates/fullchain.pem:/etc/ssl/certs/nginx.crt:ro
+      - ./website/frontend/app/dist/:/usr/share/nginx/html/:ro
     networks:
       eds_network:
       eds_outside_world:
