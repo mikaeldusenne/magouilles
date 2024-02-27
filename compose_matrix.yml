@@ -28,6 +28,8 @@ services:
       - SYNAPSE_REPORT_STATS=no
     volumes:
       - ./config/matrix/matrix/homeserver.yaml:/data/homeserver.yaml
+      - ./config/matrix/matrix/${EDS_CONTAINER_PREFIX:-eds}-matrix.log.config:/data/${EDS_CONTAINER_PREFIX:-eds}-matrix.log.config
+      - ./data/matrix/data/:/data/
       # user-managed
       - ./data/matrix/matrix/data/:/data/
     networks:
