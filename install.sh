@@ -7,12 +7,6 @@ source .env
 
 (cd docker-openssl && docker build . -t docker-openssl)
 
-LIB_PATH=$(pwd)/lib
-if ! grep -q "$LIB_PATH" $PATH; then
-    echo "adding $LIB_PATH to PATH."
-    export PATH="$PATH:$LIB_PATH"
-fi
-
 echo 'setting up...'
 
 
