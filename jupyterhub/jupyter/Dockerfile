@@ -6,15 +6,13 @@ RUN conda install -c conda-forge jupyterlab jupyterlab-git
 USER root
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends texlive-xetex texlive-fonts-recommended texlive-plain-generic && \
-    apt-get install -y curl iputils-ping dnsutils
-    apt-get clean && rm -rf /var/lib/apt/lists/*
-
-RUN apt-get install -y r-base && \
+    apt-get install -y r-base && \
     R -e "install.packages('IRkernel', repos='http://cran.us.r-project.org')" && \
     R -e "IRkernel::installspec(user = FALSE)"
 
-RUN apt-get install -y git
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends texlive-xetex texlive-fonts-recommended texlive-plain-generic && \
+    apt-get install -y curl iputils-ping dnsutils git
 
 RUN mkdir -p /home/jovyan/my_amazing_research_stuff &&\
     chown jovyan:users /home/jovyan/my_amazing_research_stuff
