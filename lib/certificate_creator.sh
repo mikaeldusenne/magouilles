@@ -3,6 +3,8 @@
 set -e
 set -u
 
+source .env
+
 # openssl x509 -in keycloak.crt.pem -text -noout
 function error(){
 	echo "$1" >&2
@@ -34,6 +36,11 @@ while [[ $# > 0 ]];do
 done
 
 DEST=${DEST:-"./"}
+
+if find "$DEST" -maxdepth 1 -type f -name '*.crt' -print -quit | grep -q .; then
+    echo "certificates exist at $(realpath "$1/certificates"), skipping"
+else
+
 
 # [ -z "$COMMON_NAME" ] && error 'must specify a CommonName'
 [ -z "$NAME" ] && error 'must specify a name'

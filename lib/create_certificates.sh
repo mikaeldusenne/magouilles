@@ -28,26 +28,30 @@ function run(){
     echo "installing SSL certificates for $1"
     mkdir -p "$1/certificates"
     
-    ./lib/certificate_creator.sh \
-        --name $(basename "$1") \
-        --san "$SAN" \
-        --dest $(realpath "$1/certificates") \
-        --p12
-    
-    CRT_FILE=$(find "$1/certificates" -name '*crt*')
-    
-    if [ "$SHOULD_COPY" = "1" ]; then
-        for ee in $COPY_DEST; do
-            mkdir -p "$ee/trusted-certs/"
-            if [ "$ee" != "$1" ]; then
-                if ! [ -d "$ee" ]; then
-                    echo "creating $ee"
-                    mkdir -p "$ee"
+    if find $(realpath "$1/certificates") -type f -name '*.crt' -print -quit | grep -q .; then
+        echo "certificates exist at $(realpath "$1/certificates"), skipping"
+    else
+        ./lib/certificate_creator.sh \
+            --name $(basename "$1") \
+            --san "$SAN" \
+            --dest $(realpath "$1/certificates") \
+            --p12
+        
+        CRT_FILE=$(find "$1/certificates" -name '*crt*')
+        
+        if [ "$SHOULD_COPY" = "1" ]; then
+            for ee in $COPY_DEST; do
+                mkdir -p "$ee/trusted-certs/"
+                if [ "$ee" != "$1" ]; then
+                    if ! [ -d "$ee" ]; then
+                        echo "creating $ee"
+                        mkdir -p "$ee"
+                    fi
+                    echo "copy $CRT_FILE to $ee"
+                    cp "$CRT_FILE" "$ee/trusted-certs/"
                 fi
-                echo "copy $CRT_FILE to $ee"
-                cp "$CRT_FILE" "$ee/trusted-certs/"
-            fi
-        done
+            done
+        fi
     fi
 }
 
