@@ -1,7 +1,7 @@
 
 # Automatically create users
 #
-# Edit this file to your needs and place it in <ROOT>/keycloak/python_setup_data/
+# Edit this file to your needs and place it in <ROOT>/config/keycloak/users.yml
 #
 # Check the script keycloak/realm_setup.py
 # to see Keycloak API usage and adapt to your needs

@@ -24,7 +24,7 @@ docker run \
   -e EDS_DOMAIN \
   -e EDS_CONTAINER_PREFIX \
   -v $(pwd)/keycloak/realm_setup.py:/app/realm_setup.py \
-  -v $(pwd)/keycloak/python_setup_data/:/app/data/ \
+  -v $(pwd)/config/keycloak/:/app/data/ \
   --network="${EDS_CONTAINER_PREFIX:-eds}-network" \
   --entrypoint python \
   "${EDS_IMAGE_PREFIX:-eds}-keycloak-python" \

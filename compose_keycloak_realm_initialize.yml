@@ -9,7 +9,7 @@ services:
       context: "./docker-python"
     volumes:
       - ./keycloak/realm_setup.py:/app/realm_setup.py
-      - ./keycloak/python_setup_data/:/app/data/
+      - ./config/keycloak/:/app/data/:ro
     environment:
       - KEYCLOAK_ADMIN_PASSWORD
       - KEYCLOAK_ADMIN
