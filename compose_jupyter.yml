@@ -15,7 +15,6 @@ services:
       - ./data/jupyterhub/data:/srv/jupyterhub 
       
     environment:
-      JUPYTERHUB_JUPYTER_IMAGE_NAME: "$JUPYTERHUB_JUPYTER_IMAGE_NAME"
       OAUTH2_AUTHORIZE_URL: "https://keycloak.$EDS_DOMAIN/realms/royaume/protocol/openid-connect/auth"
       OAUTH2_REALM_URL:     "https://keycloak.$EDS_DOMAIN/realms/royaume"
       

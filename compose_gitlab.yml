@@ -76,4 +76,3 @@ services:
     networks:
       - eds_network
     
-# "issuer" => "https://${EDS_CONTAINER_PREFIX:-eds}-keycloak:8443/realms/royaume",
