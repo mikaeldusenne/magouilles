@@ -8,11 +8,14 @@ services:
     # build:
     #   context: "./gitlab"
     volumes:
+      # self-managed: Ces volumes sont gérés par l'administrateur du système pour la configuration de GitLab, les certificats SSL et les logs.
       - './gitlab/certificates:/etc/gitlab/ssl'
-      - './gitlab/config:/etc/gitlab'
       - './gitlab/trusted-certs/:/etc/gitlab/trusted-certs/'
-      - './gitlab/logs:/var/log/gitlab'
-      - './gitlab/data:/var/opt/gitlab'
+      # 
+      - './config/gitlab/config:/etc/gitlab'
+      - './config/gitlab/logs:/var/log/gitlab'
+      # user-managed: Volumes pour les données gérées par GitLab, y compris les dépôts, les uploads, et les bases de données.
+      - './data/gitlab/data:/var/opt/gitlab'
     shm_size: '256m'
     # external_url 'https://localhost'
     # nginx['redirect_http_to_https'] = true
