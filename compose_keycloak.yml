@@ -10,7 +10,7 @@ services:
       # POSTGRES_USER: $KEYCLOAK_POSTGRES_USER
       POSTGRES_USER: postgres
     volumes:
-      - ./keycloak/postgres/volume/data:/var/lib/postgresql/data
+      - ./data/keycloak/postgres/data:/var/lib/postgresql/data
     networks:
       - keycloak_network
   
