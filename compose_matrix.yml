@@ -10,7 +10,7 @@ services:
       - POSTGRES_PASSWORD=$MATRIX_POSTGRES_PASSWORD
       - POSTGRES_INITDB_ARGS=--encoding=UTF-8 --lc-collate=C --lc-ctype=C
     volumes:
-      - ./matrix/postgres/volume/:/var/lib/postgresql/data
+      - ./data/matrix/postgres/data:/var/lib/postgresql/data
     networks:
       - matrix_network
     restart: always
@@ -27,7 +27,9 @@ services:
       - SYNAPSE_SERVER_NAME=${EDS_IMAGE_PREFIX:-eds}-matrix
       - SYNAPSE_REPORT_STATS=no
     volumes:
-      - ./matrix/matrix/data/:/data
+      - ./config/matrix/matrix/homeserver.yaml:/data/homeserver.yaml
+      # user-managed
+      - ./data/matrix/matrix/data/:/data/
     networks:
       - matrix_network
       - eds_network
@@ -41,7 +43,7 @@ services:
     build:
       context: "./matrix/element"
     volumes:
-      - ./matrix/element/element-config.json:/app/config.json
+      - ./config/matrix/element/element-config.json:/app/config.json
     networks:
       - matrix_network
       - eds_network

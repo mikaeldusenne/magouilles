@@ -1,23 +1,53 @@
 #!/bin/bash
 
-set -e
-set -u
+set -eu
 
 echo 'setting up matrix...'
 
 source .env
-EDS_CONTAINER_PREFIX=${EDS_CONTAINER_PREFIX:-eds}
 
-mkdir -p ./matrix/matrix/data/
-touch ./matrix/matrix/data/homeserver.yaml # to have write rights
-touch matrix/matrix/data/$EDS_CONTAINER_PREFIX-matrix.log.config # to have write rights
+EDS_CONTAINER_PREFIX=${EDS_CONTAINER_PREFIX:-eds} # for sudo
 
-sudo chown 991:991 ./matrix/matrix/data
+########################################################
+# Matrix
+########################################################
 
-envsubst < matrix/matrix/homeserver.yaml > matrix/matrix/data/homeserver.yaml
-cp matrix/matrix/matrix.log.config matrix/matrix/data/$EDS_CONTAINER_PREFIX-matrix.log.config 
+#########################
+## Config
+#########################
 
-# sed 's;/homeserver.log;/data/homeserver.log;' matrix/matrix/eds-matrix.log.config && cat matrix/matrix/data/eds-matrix.log.config | grep homeserver.log
-envsubst < matrix/element/element-config_template.json > matrix/element/element-config.json
+mkdir -p ./config/matrix/matrix/
 
+envsubst < ./matrix/matrix/homeserver.yaml > ./config/matrix/matrix/homeserver.yaml
+sudo chown 991:991 ./config/matrix/matrix/homeserver.yaml
+
+cp matrix/matrix/matrix.log.config ./config/matrix/matrix/$EDS_CONTAINER_PREFIX-matrix.log.config
+sudo chown 991:991 ./config/matrix/matrix/$EDS_CONTAINER_PREFIX-matrix.log.config
+
+#########################
+## Data
+#########################
+
+mkdir -p ./data/matrix/matrix/data/
+sudo chown 991:991 ./data/matrix/matrix/data/
+
+########################################################
+# Element
+########################################################
+
+
+#########################
+## Config
+#########################
+
+mkdir -p ./config/matrix/matrix/
+
+envsubst < matrix/element/element-config_template.json > ./config/matrix/element/element-config.json
+
+#########################
+## Data
+#########################
+
+
+########################################################
 echo 'Done setting up matrix.'
