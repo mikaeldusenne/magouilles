@@ -13,9 +13,10 @@ services:
     environment:
       - KEYCLOAK_ADMIN_PASSWORD
       - KEYCLOAK_ADMIN
-      - KEYCLOAK_GITLAB_SECRET
-      - KEYCLOAK_JUPYTER_SECRET
-      - KEYCLOAK_MATRIX_SECRET
+      # - KEYCLOAK_GITLAB_SECRET
+      # - KEYCLOAK_JUPYTER_SECRET
+      # - KEYCLOAK_MATRIX_SECRET
+      - KEYCLOAK_CLIENT_SECRET
       - EDS_DOMAIN
       - EDS_CONTAINER_PREFIX
     entrypoint: ['python', './realm_setup.py']
