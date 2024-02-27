@@ -8,8 +8,11 @@ services:
       context: "./jupyterhub"
 
     volumes:
-      - ./jupyterhub/data:/srv/jupyterhub  # Custom configuration directory
       - /var/run/docker.sock:/var/run/docker.sock # For DockerSpawner
+      # config
+      - ./config/jupyterhub/jupyterhub_config.py:/srv/jupyterhub/jupyterhub_config.py
+      # data
+      - ./data/jupyterhub/data:/srv/jupyterhub 
       
     environment:
       JUPYTERHUB_JUPYTER_IMAGE_NAME: "$JUPYTERHUB_JUPYTER_IMAGE_NAME"
