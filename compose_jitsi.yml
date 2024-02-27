@@ -37,6 +37,8 @@ services:
       - ./config/jitsi/jitsi/web:/config:Z
       - ./config/jitsi/jitsi/web/crontabs:/var/spool/cron/crontabs:Z
       - ./config/jitsi/jitsi/transcripts:/usr/share/jitsi-meet/transcripts:Z
+    env_file:
+      - ./config/jitsi/.env
     # environment:
     #   - ADAPTER_INTERNAL_URL
     #   - AMPLITUDE_ID
