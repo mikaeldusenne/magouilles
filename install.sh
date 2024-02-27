@@ -42,5 +42,7 @@ bash ./jupyterhub/install.sh
 bash ./matrix/install.sh
 sudo bash ./nginx/install.sh
 bash ./keycloak/install.sh
+bash ./website/frontend/install.sh
+bash ./jitsi/install.sh
 
 echo 'done.'
