@@ -21,17 +21,9 @@ echo 'setting up...'
 ./lib/create_certificates.sh --name gitlab --copy
 ./lib/create_certificates.sh --name matrix/matrix --copy
 
-function create_env(){
-    echo "creating secret key for '$1'"
-    if ! grep -q "^export $1=" .env; then
-        echo "export $1='$(randompass 64 'a-zA-Z0-9_')'" >> .env
-    else
-        echo "$1 already exists."
-    fi
-}
 
 while IFS= read -r secret; do
-    create_env "$secret"
+    lib/create_env "$secret" .env
 done <<EOF
 KEYCLOAK_USER_PASSWORD
 KEYCLOAK_ADMIN_PASSWORD
@@ -48,12 +40,6 @@ EOF
 bash ./jupyterhub/install.sh
 bash ./matrix/install.sh
 sudo bash ./nginx/install.sh
-
-
-# docker compose -f compose_network.yml -f compose_keycloak.yml -f compose_keycloak_realm_initialize.yml up --build --abort-on-container-exit
-
-# set up realm and OIDC clients
-./start.sh network keycloak keycloak_realm_initialize
-
+bash ./keycloak/install.sh
 
 echo 'done.'
