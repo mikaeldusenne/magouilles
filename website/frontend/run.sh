@@ -9,19 +9,19 @@ CMD=""
 ARGS=""
 IS_CMD='0'
 
-if [ "$@" == "install" ]; then
+if [ "$1" = "install" ]; then
     CMD='npm install'
-elif [ "$@" == "dev" ]; then
+elif [ "$1" = "dev" ]; then
     CMD='npm run dev -- --host'
     ARGS='-it -p 8877:5173'
-elif [ "$@" == "build" ]; then
+elif [ "$1" = "build" ]; then
     CMD="npm run build"
 fi
 
 if [ -z "$CMD" ]; then
     while [[ $# > 0 ]];do
-        if [ "$1" = '8' ]; then
-            IS_CMD=1
+        if [ "$1" = '---' ]; then
+            IS_CMD=1;
         else
 	        case "$IS_CMD" in
                 0) ARGS="$ARGS $1";;
