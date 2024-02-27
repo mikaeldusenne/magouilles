@@ -13,7 +13,7 @@ source ./.env
 #########################
 
 mkdir -p ./config/jupyterhub/
-envsubst < jupyterhub/jupyterhub_config.py > jupyterhub/data/jupyterhub_config.py
+envsubst < jupyterhub/jupyterhub_config.py > ./config/jupyterhub/jupyterhub_config.py
 
 #########################
 ## Data
