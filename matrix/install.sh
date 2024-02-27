@@ -40,7 +40,7 @@ sudo chown 991:991 ./data/matrix/matrix/data/
 ## Config
 #########################
 
-mkdir -p ./config/matrix/matrix/
+mkdir -p ./config/matrix/element/
 
 envsubst < matrix/element/element-config_template.json > ./config/matrix/element/element-config.json
 
