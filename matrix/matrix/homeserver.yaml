@@ -11,7 +11,7 @@
 # For more information on how to configure Synapse, including a complete accounting of
 # each option, go to docs/usage/configuration/config_documentation.md or
 # https://element-hq.github.io/synapse/latest/usage/configuration/config_documentation.html
-server_name: "$EDS_CONTAINER_PREFIX-matrix"
+server_name: "$EDS_DOMAIN"
 pid_file: /data/homeserver.pid
 public_baseurl: https://matrix.$EDS_DOMAIN
 listeners:
@@ -48,8 +48,7 @@ report_stats: false
 macaroon_secret_key: "$MATRIX_MACAROON_SECRET_KEY"
 form_secret: "MATRIX_FORM_SECRET"
 signing_key_path: "/data/$EDS_CONTAINER_PREFIX-matrix.signing.key"
-trusted_key_servers:
-  - server_name: "$EDS_CONTAINER_PREFIX-matrix"
+trusted_key_servers: []
     
 oidc_providers:
   - idp_id: keycloak
