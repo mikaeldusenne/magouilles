@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 
 set -e
 set -u
@@ -39,7 +39,8 @@ DEST=${DEST:-"./"}
 
 if find "$DEST" -maxdepth 1 -type f -name '*.crt' -print -quit | grep -q .; then
     echo "certificates exist at $(realpath "$1/certificates"), skipping"
-else
+    exit 0
+fi
 
 
 # [ -z "$COMMON_NAME" ] && error 'must specify a CommonName'
@@ -72,5 +73,4 @@ run_openssl req -x509 -newkey rsa:2048 -nodes -keyout $NAME.key -out $NAME.crt -
 if [ "$P12" = "1" ]; then
 	run_openssl pkcs12 -export -in $NAME.crt -inkey $NAME.key -out $NAME.p12 -name server -password pass:changeit
 fi
-
 
