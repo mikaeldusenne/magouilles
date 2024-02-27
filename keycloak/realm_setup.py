@@ -26,7 +26,7 @@ endpoints = dict(
 )
 
 # list of clients to create, with their configuration
-services = "jupyter gitlab meet chat".split()
+services = "jupyter gitlab meet matrix".split()
 clients = [
     {
         'clientId': 'keycloak',
