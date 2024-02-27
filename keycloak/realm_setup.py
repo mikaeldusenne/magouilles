@@ -26,52 +26,71 @@ endpoints = dict(
 )
 
 # list of clients to create, with their configuration
+services = "jupyter gitlab meet chat".split()
 clients = [
     {
-        'clientId': 'jupyterhub',
-        'name': 'JupyterHub',
-        'description': '',
+        'clientId': 'keycloak',
+        'name': 'Keycloak',
+        'description': 'Keycloak OIDC client for all services',
         'enabled': True,
         'protocol': 'openid-connect',
         'publicClient': False,
-        'redirectUris': [f'https://jupyter.{environ["EDS_DOMAIN"]}/hub/oauth_callback'],
+        'redirectUris': [
+            f'https://{environ["EDS_DOMAIN"]}/*',
+            *[f'https://{e}.{environ["EDS_DOMAIN"]}/*' for e in services]
+        ],
         'clientAuthenticatorType': 'client-secret',
-        'secret': environ["KEYCLOAK_JUPYTER_SECRET"],
-        # "postLogoutRedirectUris": [f'https://jupyter.{environ["EDS_DOMAIN"]}/'],
+        'secret': environ["KEYCLOAK_CLIENT_SECRET"],
+        "webOrigins": ['+'],
         "attributes": {
             "post.logout.redirect.uris": "+",
         },
     },
-    {
-        'clientId': 'matrix',
-        'name': 'Matrix',
-        'description': '',
-        'enabled': True,
-        'protocol': 'openid-connect',
-        'publicClient': False,
-        'redirectUris': [f'https://matrix.{environ["EDS_DOMAIN"]}/_synapse/client/oidc/callback'],
-        'clientAuthenticatorType': 'client-secret',
-        'secret': environ["KEYCLOAK_MATRIX_SECRET"],
-        "attributes": {
-            "post.logout.redirect.uris": "+",
-        },
+    # {
+    #     'clientId': 'jupyterhub',
+    #     'name': 'JupyterHub',
+    #     'description': '',
+    #     'enabled': True,
+    #     'protocol': 'openid-connect',
+    #     'publicClient': False,
+    #     'redirectUris': [f'https://jupyter.{environ["EDS_DOMAIN"]}/hub/oauth_callback'],
+    #     'clientAuthenticatorType': 'client-secret',
+    #     'secret': environ["KEYCLOAK_JUPYTER_SECRET"],
+    #     # "postLogoutRedirectUris": [f'https://jupyter.{environ["EDS_DOMAIN"]}/'],
+    #     "attributes": {
+    #         "post.logout.redirect.uris": "+",
+    #     },
+    # },
+    # {
+    #     'clientId': 'matrix',
+    #     'name': 'Matrix',
+    #     'description': '',
+    #     'enabled': True,
+    #     'protocol': 'openid-connect',
+    #     'publicClient': False,
+    #     'redirectUris': [f'https://matrix.{environ["EDS_DOMAIN"]}/_synapse/client/oidc/callback'],
+    #     'clientAuthenticatorType': 'client-secret',
+    #     'secret': environ["KEYCLOAK_MATRIX_SECRET"],
+    #     "attributes": {
+    #         "post.logout.redirect.uris": "+",
+    #     },
 
-    },
-    {
-        'clientId': 'gitlab',
-        'name': 'Gitlab',
-        'description': '',
-        'enabled': True,
-        'protocol': 'openid-connect',
-        'publicClient': False,
-        'redirectUris': [f'https://gitlab.{environ["EDS_DOMAIN"]}/users/auth/openid_connect/callback'],
-        'clientAuthenticatorType': 'client-secret',
-        'secret': environ["KEYCLOAK_GITLAB_SECRET"],
-        "attributes": {
-            "post.logout.redirect.uris": "+",
-        },
+    # },
+    # {
+    #     'clientId': 'gitlab',
+    #     'name': 'Gitlab',
+    #     'description': '',
+    #     'enabled': True,
+    #     'protocol': 'openid-connect',
+    #     'publicClient': False,
+    #     'redirectUris': [f'https://gitlab.{environ["EDS_DOMAIN"]}/users/auth/openid_connect/callback'],
+    #     'clientAuthenticatorType': 'client-secret',
+    #     'secret': environ["KEYCLOAK_GITLAB_SECRET"],
+    #     "attributes": {
+    #         "post.logout.redirect.uris": "+",
+    #     },
 
-    },
+    # },
 ]
 
 

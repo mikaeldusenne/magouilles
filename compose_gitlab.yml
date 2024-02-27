@@ -17,11 +17,9 @@ services:
       # user-managed: Volumes pour les données gérées par GitLab, y compris les dépôts, les uploads, et les bases de données.
       - './data/gitlab/data:/var/opt/gitlab'
     shm_size: '256m'
-    # external_url 'https://localhost'
-    # nginx['redirect_http_to_https'] = true
-    # gitlab_rails['omniauth_auto_sign_in_with_provider'] = 'openid_connect'
-    # "ssl" => { "verify" => false }
-    # external_url 'https://${EDS_CONTAINER_PREFIX:-eds}-gitlab'
+    # "identifier" => "gitlab",
+    # "secret" => "$KEYCLOAK_GITLAB_SECRET",
+
     environment:
       GITLAB_LOG_LEVEL: WARN
       GITLAB_OMNIBUS_CONFIG: |
@@ -62,8 +60,8 @@ services:
               "uid_field" => "preferred_username",
               "logout_url" => "/cas/logout",
               "client_options" => {
-                "identifier" => "gitlab",
-                "secret" => "$KEYCLOAK_GITLAB_SECRET",
+                "identifier" => "keycloak",
+                "secret" => "$KEYCLOAK_CLIENT_SECRET",
                 "redirect_uri" => "https://gitlab.$EDS_DOMAIN/users/auth/openid_connect/callback",
                 
                 "authorization_endpoint" => "https://keycloak.$EDS_DOMAIN/realms/royaume/protocol/openid-connect/auth",

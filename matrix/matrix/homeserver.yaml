@@ -55,8 +55,10 @@ oidc_providers:
   - idp_id: keycloak
     idp_name: "Keycloak"
     discover: true
-    client_id: "matrix"
-    client_secret: "$KEYCLOAK_MATRIX_SECRET" 
+    client_id: "keycloak"
+    client_secret: "$KEYCLOAK_CLIENT_SECRET" 
+    # client_id: "matrix"
+    # client_secret: "$KEYCLOAK_MATRIX_SECRET" 
     scopes: ["openid", "profile"]
     
     authorization_endpoint: "https://keycloak.$EDS_DOMAIN/realms/royaume/protocol/openid-connect/auth"

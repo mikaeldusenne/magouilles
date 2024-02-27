@@ -22,8 +22,11 @@ services:
       OAUTH2_TOKEN_URL:     "https://${EDS_CONTAINER_PREFIX}-keycloak:8443/realms/royaume/protocol/openid-connect/token"
       OAUTH2_USERDATA_URL:  "https://${EDS_CONTAINER_PREFIX}-keycloak:8443/realms/royaume/protocol/openid-connect/userinfo"
       
-      OAUTH2_CLIENT_ID: "jupyterhub"
-      OAUTH2_CLIENT_SECRET: "$KEYCLOAK_JUPYTER_SECRET"
+      # OAUTH2_CLIENT_ID: "jupyterhub"
+      # OAUTH2_CLIENT_SECRET: "$KEYCLOAK_JUPYTER_SECRET"
+      OAUTH2_CLIENT_ID: "keycloak"
+      OAUTH2_CLIENT_SECRET: "$KEYCLOAK_CLIENT_SECRET"
+      
       OAUTH_CALLBACK_URL:   "https://jupyter.$EDS_DOMAIN/hub/oauth_callback"
       
       JUPYTERHUB_API_URL: "https://${EDS_CONTAINER_PREFIX}-jupyterhub/hub/api"
