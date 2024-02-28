@@ -11,7 +11,7 @@ db.createUser({
     ]
 })
 
-db = db.getSiblingDB('$MONGO_INITDB_DATABASE');
+// db = db.getSiblingDB('$MONGO_INITDB_DATABASE');
 
 db.createUser(
 	  {
