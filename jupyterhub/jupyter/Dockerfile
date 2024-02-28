@@ -26,13 +26,15 @@ RUN apt-get update && apt-get install -y nodejs
 # Install Sass globally using npm
 RUN npm install -g sass
 
-RUN apt-get update && apt-get install pandoc
+RUN apt-get update && apt-get install -y pandoc
 
 COPY requirements.txt ./
 RUN pip install -r requirements.txt
 
 RUN curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
 
+RUN chown -R jovyan:users /home/jovyan/.ghcup
+RUN chown -R jovyan:users /home/jovyan/.cabal
 RUN chown -R jovyan:users /home/jovyan/.local
 RUN chown -R jovyan:users /home/jovyan/.ipython
 
@@ -41,8 +43,16 @@ COPY trusted-certs/gitlab.crt /usr/local/share/ca-certificates/gitlab.crt
 COPY trusted-certs/keycloak.crt /usr/local/share/ca-certificates/keycloak.crt
 RUN update-ca-certificates
 
+RUN apt-get update && apt-get install -y libgmp-dev
+
 USER jovyan
 ###############################################
+# RUN /home/jovyan/.ghcup/bin/cabal install pandoc-types
+ENV PATH="${PATH}:/home/jovyan/.ghcup/bin"
+RUN ghcup install ghc
+
+RUN cabal install pandoc-types
+
 
 ENV REQUESTS_CA_BUNDLE='/etc/ssl/certs/ca-certificates.crt'
 ENV SSL_CERT_FILE='/etc/ssl/certs/ca-certificates.crt'
