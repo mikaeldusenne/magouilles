@@ -21,6 +21,13 @@ RUN apt-get install -y build-essential libssl-dev libcurl4-openssl-dev libxml2-d
 
 RUN pip install --upgrade pexpect # needed for python 3.11+ support
 
+RUN apt-get update && apt-get install -y nodejs
+
+# Install Sass globally using npm
+RUN npm install -g sass
+
+RUN apt-get update && apt-get install pandoc
+
 COPY requirements.txt ./
 RUN pip install -r requirements.txt
 
