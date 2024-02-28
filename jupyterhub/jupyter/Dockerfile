@@ -31,6 +31,7 @@ RUN apt-get update && apt-get install pandoc
 COPY requirements.txt ./
 RUN pip install -r requirements.txt
 
+RUN curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
 
 RUN chown -R jovyan:users /home/jovyan/.local
 RUN chown -R jovyan:users /home/jovyan/.ipython
