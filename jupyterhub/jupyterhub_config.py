@@ -112,7 +112,10 @@ c.DockerSpawner.notebook_dir = notebook_dir
 # c.Spawner.pre_spawn_hook = create_dir_hook
 # c.DockerSpawner.volumes = { './jupyterhub/jupyter/notebook_volumes/{username}': notebook_dir}
 
-c.DockerSpawner.volumes = { 'jupyterhub-user-{username}': notebook_dir }
+c.DockerSpawner.volumes = {
+    'jupyterhub-user-{username}': notebook_dir,
+    '/uservolumes/{username}': os.path.join(notebook_dir,"shared"),
+}
 
 1
 # c = get_config()  #noqa

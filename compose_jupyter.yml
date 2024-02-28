@@ -13,6 +13,7 @@ services:
       - ./config/jupyterhub/jupyterhub_config.py:/srv/jupyterhub/jupyterhub_config.py
       # data
       - ./data/jupyterhub/data:/srv/jupyterhub 
+      - ./data/jupyterhub/shared/:/uservolumes/
       
     environment:
       OAUTH2_AUTHORIZE_URL: "https://keycloak.$EDS_DOMAIN/realms/royaume/protocol/openid-connect/auth"
