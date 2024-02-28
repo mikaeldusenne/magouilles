@@ -1,0 +1,17 @@
+version: '3'
+services:
+  mongo:
+    image: mongo:7.0
+    container_name: "${EDS_CONTAINER_PREFIX:-eds}-mongo"
+    volumes:
+      - ./config/mongo/:/docker-entrypoint-initdb.d/:ro
+      
+      - "./data/mongo/data:/data/db"
+      - "./data/mongo/dumps:/dumps"
+      - "./data/mongo/.dbshell:/home/mongodb/.dbshell"
+    networks:
+      - eds_network
+      # - db_network
+      
+# networks:
+#   db_network:
