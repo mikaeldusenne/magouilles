@@ -48,10 +48,10 @@ RUN apt-get update && apt-get install -y libgmp-dev
 USER jovyan
 ###############################################
 # RUN /home/jovyan/.ghcup/bin/cabal install pandoc-types
-ENV PATH="${PATH}:/home/jovyan/.ghcup/bin"
-RUN ghcup install ghc
+# ENV PATH="${PATH}:/home/jovyan/.ghcup/bin"
+# RUN ghcup install ghc
 
-RUN cabal install pandoc-types
+# RUN cabal install pandoc-types
 
 
 ENV REQUESTS_CA_BUNDLE='/etc/ssl/certs/ca-certificates.crt'
