@@ -30,6 +30,8 @@ MATRIX_POSTGRES_PASSWORD
 MATRIX_MACAROON_SECRET_KEY
 MATRIX_FORM_SECRET
 MATRIX_REGISTRATION_SHARED_SECRET
+MONGO_INITDB_ROOT_PASSWORD
+MONGO_INITDB_USER_PASSWORD
 EOF
 
 bash ./jupyterhub/install.sh
@@ -38,5 +40,6 @@ sudo bash ./nginx/install.sh
 bash ./keycloak/install.sh
 bash ./website/frontend/install.sh
 bash ./jitsi/install.sh
+bash ./mongo/install.sh
 
 echo 'done.'
