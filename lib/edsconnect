@@ -1,12 +1,14 @@
 #!/bin/bash
 
-source .env
+set -eu
+
+source ./.env
 
 CONTAINER="$1"
 
 shift
 
-if [ -z "$1" ]; then
+if [ -z "${1:-}" ]; then
     args="bash"
 else
     args=$@
