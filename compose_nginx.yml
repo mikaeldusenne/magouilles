@@ -9,7 +9,7 @@ services:
       - ./nginx/certificates/privkey.pem:/etc/ssl/private/nginx.key:ro
       - ./nginx/certificates/fullchain.pem:/etc/ssl/certs/nginx.crt:ro
       - ./website/frontend/app/dist/:/usr/share/nginx/html/:ro
-      - ./data/jupyterhub/shared/:/var/www/shared/:ro
+      - /uservolumes/:/var/www/shared/:ro
     ports:
       - "8888:443"
     networks:

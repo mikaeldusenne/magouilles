@@ -65,6 +65,9 @@ c.JupyterHub.hub_connect_ip = '$EDS_CONTAINER_PREFIX-jupyterhub'  # IP as seen o
 #         return f"$EDS_CONTAINER_PREFIX-jupyter-{username}"
 # c.JupyterHub.spawner_class = CustomDockerSpawner
 
+
+# Define your relative path
+    
 c.JupyterHub.spawner_class = DockerSpawner
 c.DockerSpawner.prefix = '$EDS_CONTAINER_PREFIX-jupyter'
 
@@ -94,13 +97,12 @@ c.DockerSpawner.notebook_dir = notebook_dir
 # c.SwarmSpawner.mem_limit = '4G'
 
 # c.DockerSpawner.extra_create_kwargs = {'user': '1000:100'}
-# def create_dir_hook(spawner):
-#     username = spawner.user.name
-#     volume_path = os.path.join('./jupyterhub/jupyter/notebook_volumes/', username)
-#     if not os.path.exists(volume_path):
-#         os.makedirs(volume_path, exist_ok=True)
-#         os.chown(volume_path, 1000, 100)  # Use the UID and GID for jovyan user
-# c.Spawner.pre_spawn_hook = create_dir_hook
+def create_dir_hook(spawner):
+    username = spawner.user.name
+    volume_path = os.path.join(notebook_dir, "shared")
+    os.makedirs(volume_path, exist_ok=True)
+    os.chown(volume_path, 1000, 100)  # Use the UID and GID for jovyan user
+c.Spawner.pre_spawn_hook = create_dir_hook
 # def create_dir_hook(spawner):
 #     username = spawner.user.name
 #     # on host filesystem
@@ -112,6 +114,8 @@ c.DockerSpawner.notebook_dir = notebook_dir
 # c.Spawner.pre_spawn_hook = create_dir_hook
 # c.DockerSpawner.volumes = { './jupyterhub/jupyter/notebook_volumes/{username}': notebook_dir}
 
+
+######################## volumes
 c.DockerSpawner.volumes = {
     'jupyterhub-user-{username}': notebook_dir,
     '/uservolumes/{username}': os.path.join(notebook_dir,"shared"),
