@@ -22,3 +22,16 @@ lxml
 pyarrow
 kaleido
 
+seaborn
+unidecode
+scikit-learn
+sqlalchemy
+
+beautifulsoup4
+matplotlib-venn
+xgboost
+
+statsmodels
+# tensorflow
+# pandocfilters
+
