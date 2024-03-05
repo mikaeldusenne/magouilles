@@ -14,6 +14,7 @@ echo 'setting up...'
 ./lib/create_certificates.sh --name jupyterhub --copy
 ./lib/create_certificates.sh --name gitlab --copy
 ./lib/create_certificates.sh --name matrix/matrix --copy
+# ./lib/create_certificates.sh --name owncloud --copy
 
 
 while IFS= read -r secret; do
@@ -32,6 +33,13 @@ MATRIX_FORM_SECRET
 MATRIX_REGISTRATION_SHARED_SECRET
 MONGO_INITDB_ROOT_PASSWORD
 MONGO_INITDB_USER_PASSWORD
+OWNCLOUD_ADMIN_PASSWORD
+OWNCLOUD_ADMIN_PASSWORD
+OWNCLOUD_DB_ROOT_PASSWORD
+OWNCLOUD_DB_USER_PASSWORD
+OWNCLOUD_CLIENT_SECRET
+OWNCLOUD_SECRET
+OWNCLOUD_SALT
 EOF
 
 bash ./jupyterhub/install.sh
@@ -41,5 +49,6 @@ bash ./keycloak/install.sh
 bash ./website/frontend/install.sh
 bash ./jitsi/install.sh
 bash ./mongo/install.sh
+bash ./owncloud/install.sh
 
 echo 'done.'
