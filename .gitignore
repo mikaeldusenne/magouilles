@@ -21,3 +21,6 @@ jitsi/jitsi-docker/
 
 config
 data/
+jitsi-keycloak-adapter
+*logs.txt
+docker-onlyoffice-owncloud

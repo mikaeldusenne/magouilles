@@ -38,6 +38,9 @@ if [ -n "$EDS_DEV_MODE" ]; then
     echo $action | grep -q "\bup\b" && (sleep 10 && sudo ./lib/set_hosts) &
 fi
 
+
+# sudo tail -f data/owncloud/owncloud/files/owncloud.log | jq | sed 's/\\//g' &
+
 echo "docker compose $yamls $action"
 docker compose $yamls $action
 
