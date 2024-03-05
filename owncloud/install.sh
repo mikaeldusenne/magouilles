@@ -5,12 +5,13 @@ set -eux
 source .env
 
 echo 'checking if oidc package is extracted...'
+mkdir -p ./config/owncloud/apps
 if [ ! -e ./config/owncloud/apps/openidconnect ]; then
-    mkdir -p ./config/owncloud/apps
     tar xzvf ./owncloud/openidconnect-2.2.0.tar.gz -C ./config/owncloud/apps/
 fi
 
-if cat config/owncloud/config.php | grep -q -i 'installed.*false'; then
+touch config/owncloud/config.php
+if ! (cat config/owncloud/config.php | grep -q -i 'installed.*true'); then
     echo 'creating ./config/owncloud/config.php...'
     envsubst "$(sed -n '3,$p' ./owncloud/config_template.php)" < ./owncloud/config_template.php > ./config/owncloud/config.php
     
