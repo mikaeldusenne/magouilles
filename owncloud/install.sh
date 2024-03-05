@@ -16,8 +16,8 @@ if ! (cat config/owncloud/config.php | grep -q -i 'installed.*true'); then
     envsubst "$(sed -n '3,$p' ./owncloud/config_template.php)" < ./owncloud/config_template.php > ./config/owncloud/config.php
     
     echo 'starting docker...'
-    docker-compose -f compose_network.yml -f compose_owncloud.yml up -d
-    docker-compose -f compose_network.yml -f compose_owncloud.yml logs -f > docker_logs.txt &
+    docker compose -f compose_network.yml -f compose_owncloud.yml up -d
+    docker compose -f compose_network.yml -f compose_owncloud.yml logs -f > docker_logs.txt &
     tail -f docker_logs.txt &
     
     echo 'sleeping 20 seconds...'
@@ -27,7 +27,7 @@ if ! (cat config/owncloud/config.php | grep -q -i 'installed.*true'); then
     docker exec --user www-data eds-owncloud occ app:enable openidconnect
 
     echo 'shutting down...'
-    docker-compose -f compose_network.yml -f compose_owncloud.yml down
+    docker compose -f compose_network.yml -f compose_owncloud.yml down
 fi
 
 # echo 'installing OnlyOffice collaborative tool...'
