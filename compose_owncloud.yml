@@ -1,0 +1,79 @@
+version: "3"
+
+services:
+  owncloud:
+    image: "${EDS_IMAGE_PREFIX:-eds}-owncloud"
+    build:
+      context: "./owncloud"
+    container_name: "${EDS_CONTAINER_PREFIX:-eds}-owncloud"
+    # restart: always
+    depends_on:
+      - owncloud-mariadb
+      - owncloud-redis
+    environment:
+      - OWNCLOUD_DOMAIN=drive.$EDS_DOMAIN
+      # - OWNCLOUD_TRUSTED_DOMAINS=${OWNCLOUD_TRUSTED_DOMAINS}
+      - OWNCLOUD_DB_TYPE=mysql
+      - OWNCLOUD_DB_HOST=${EDS_CONTAINER_PREFIX:-eds}-owncloud-mysql
+      - OWNCLOUD_DB_NAME=owncloud
+      - OWNCLOUD_DB_USERNAME=owncloud
+      - OWNCLOUD_DB_PASSWORD=$OWNCLOUD_DB_USER_PASSWORD
+      - OWNCLOUD_ADMIN_USERNAME
+      - OWNCLOUD_ADMIN_PASSWORD
+      - OWNCLOUD_MYSQL_UTF8MB4=true
+      - OWNCLOUD_REDIS_ENABLED=true
+      - OWNCLOUD_REDIS_HOST=eds-owncloud-redis
+    healthcheck:
+      test: ["CMD", "/usr/bin/healthcheck"]
+      interval: 120s
+      timeout: 10s
+      retries: 5
+    volumes:
+      - ./owncloud/trusted-certs:/trusted-certs
+      - ./config/owncloud/apps:/mnt/data/apps
+      - ./config/owncloud/config.php:/mnt/data/config/config.php
+      # - ./config/owncloud/apps/openidconnect2:/var/www/owncloud/apps/openidconnect:ro
+      - ./data/owncloud/owncloud:/mnt/data
+    networks:
+      eds_network:
+      owncloud_network:
+        priority: 9000
+      
+  owncloud-mariadb:
+    image: mariadb:10.11 # minimum required ownCloud version is 10.9
+    container_name: "${EDS_CONTAINER_PREFIX:-eds}-owncloud-mysql"
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=$OWNCLOUD_DB_ROOT_PASSWORD
+      - MYSQL_USER=owncloud
+      - MYSQL_PASSWORD=$OWNCLOUD_DB_USER_PASSWORD
+      - MYSQL_DATABASE=owncloud
+      - MARIADB_AUTO_UPGRADE=1
+    command: ["--max-allowed-packet=128M", "--innodb-log-file-size=64M"]
+    # healthcheck:
+    #   test: ["CMD", "mysqladmin", "ping", "-u", "root", "--password=owncloud"]
+    #   interval: 10s
+    #   timeout: 5s
+    #   retries: 5
+    volumes:
+      - ./data/owncloud/mysql/data:/var/lib/mysql
+    networks:
+      owncloud_network:
+
+  owncloud-redis:
+    image: redis:6
+    container_name: "${EDS_CONTAINER_PREFIX:-eds}-owncloud-redis"
+    restart: always
+    command: ["--databases", "1"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - ./data/owncloud/redis/data:/data
+    networks:
+      owncloud_network:      
+          
+networks:
+  owncloud_network:
