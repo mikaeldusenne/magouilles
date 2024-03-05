@@ -12,7 +12,7 @@ $CONFIG = array (
       'token_endpoint_auth_methods_supported' => ["private_key_jwt", "client_secret_basic", "client_secret_post", "tls_client_auth", "client_secret_jwt"],
       'userinfo_endpoint' => 'https://$EDS_CONTAINER_PREFIX-keycloak:8443/realms/royaume/protocol/openid-connect/userinfo',
       'registration_endpoint' => 'https://$EDS_CONTAINER_PREFIX-keycloak:8443/realms/royaume/clients-registrations/openid-connect',
-      'end_session_endpoint' => 'https://keycloak.$EDS_DOMAIN/realms/royaume/protocol/openid-connect/logout&client_id=keycloak',
+      'end_session_endpoint' => 'https://keycloak.$EDS_DOMAIN/realms/royaume/protocol/openid-connect/logout?client_id=keycloak',
       'jwks_uri' => 'https://$EDS_CONTAINER_PREFIX-keycloak:8443/realms/royaume/protocol/openid-connect/certs',
     ],
     'auto-provision' => [
