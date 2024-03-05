@@ -41,19 +41,14 @@ const services = ref([
     link: 'meet',
   },
   {
-    name: 'Seafile',
+    name: 'Owncloud',
     description: 'Stockage et synchronisation de fichiers haute performance.',
-    link: 'seafile',
+    link: 'drive',
   },
   {
     name: 'Draw.io',
     description: 'Outil de diagrammes en ligne gratuit et open source.',
     link: 'drawio',
-  },
-  {
-    name: 'OnlyOffice',
-    description: 'Suite bureautique en ligne pour la collaboration sur des documents.',
-    link: 'onlyoffice',
   },
 ])
 
