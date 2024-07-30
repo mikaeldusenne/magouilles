@@ -25,7 +25,7 @@ while [[ $# > 0 ]];do
 done
 
 if [ -z "$yamls" ]; then
-    yamls="-f compose_network.yml -f compose_nginx.yml -f compose_keycloak.yml -f compose_db.yml -f compose_jupyter.yml -f compose_matrix.yml -f compose_gitlab.yml -f compose_jitsi.yml -f compose_owncloud.yml"
+    yamls="-f compose_network.yml -f compose_nginx.yml -f compose_keycloak.yml -f compose_db.yml -f compose_jupyter.yml -f compose_matrix.yml -f compose_gitlab.yml -f compose_jitsi.yml"
 fi
 
 

@@ -48,6 +48,6 @@ bash ./keycloak/install.sh
 bash ./website/frontend/install.sh
 bash ./jitsi/install.sh
 bash ./mongo/install.sh
-bash ./owncloud/install.sh
+# bash ./owncloud/install.sh
 
 echo 'done.'
