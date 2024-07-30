@@ -24,3 +24,4 @@ data/
 jitsi-keycloak-adapter
 *logs.txt
 docker-onlyoffice-owncloud
+*~
