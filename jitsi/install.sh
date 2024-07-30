@@ -5,10 +5,16 @@ set -eu
 source .env
 
 (
-    git clone git@github.com:mikaeldusenne/jitsi-keycloak-adapter.git && \
+    git clone https://github.com/mikaeldusenne/jitsi-keycloak-adapter.git && \
         cd jitsi-keycloak-adapter && \
         git checkout origin/authenticate-from-private-network
 )
+
+# (
+#     git clone git@github.com:mikaeldusenne/jitsi-keycloak-adapter.git && \
+#         cd jitsi-keycloak-adapter && \
+#         git checkout origin/authenticate-from-private-network
+# )
 
 # cd jitsi
 
