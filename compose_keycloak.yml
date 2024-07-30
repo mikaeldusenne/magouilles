@@ -42,11 +42,12 @@ services:
       # https://www.keycloak.org/server/reverseproxy
       - --proxy=edge
       - --hostname-strict=false
-      - --hostname-strict-https=false
+      # - --hostname-strict-https=false
       - --hostname=keycloak.$EDS_DOMAIN
       - --db-url=jdbc:postgresql://${EDS_CONTAINER_PREFIX:-eds}-keycloak-postgres/postgres
       - --hostname-debug=true
-      - --hostname-admin-url=https://keycloak.$EDS_DOMAIN
+      # - --hostname-admin-url=https://keycloak.$EDS_DOMAIN
+      - --hostname-admin=https://keycloak.$EDS_DOMAIN
       - --log-level=WARN # debug | TRACE | ALL | WARN
       - --db=postgres
       # - --db-username=keycloak
