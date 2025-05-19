@@ -1,5 +1,3 @@
-version: '3.8' 
-
 services:
   gitlab:
     container_name: "${EDS_CONTAINER_PREFIX:-eds}-gitlab"

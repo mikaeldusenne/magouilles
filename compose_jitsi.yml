@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   jitsi-keycloakadapter:
     # image: ghcr.io/nordeck/jitsi-keycloak-adapter

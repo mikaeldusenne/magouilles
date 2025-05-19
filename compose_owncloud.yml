@@ -1,5 +1,3 @@
-version: "3"
-
 services:
   owncloud:
     image: "${EDS_IMAGE_PREFIX:-eds}-owncloud"
